@@ -1,8 +1,5 @@
 import {
-  memo,
-  useCallback,
   useEffect,
-  useMemo,
   useReducer,
   useRef,
   useState,
@@ -842,7 +839,7 @@ function useDynamicGoogleFont(fontFamily: string): void {
 }
 
 function useShellTheme(theme: DesignTheme): ShellTheme {
-  return useMemo(() => {
+  return (() => {
     const semanticMap = new Map(
       theme.semantics
         .filter((token) => token.type === "color")
@@ -895,10 +892,10 @@ function useShellTheme(theme: DesignTheme): ShellTheme {
         ),
       },
     };
-  }, [theme]);
+  })();
 }
 
-const SectionTitle = memo(function SectionTitle({
+const SectionTitle = function SectionTitle({
   children,
   shell,
 }: SectionTitleProps) {
@@ -921,21 +918,18 @@ const SectionTitle = memo(function SectionTitle({
       <div style={{ flex: 1, height: 1, background: shell.colors.border }} />
     </div>
   );
-});
+};
 
-const ColorInput = memo(function ColorInput({
+const ColorInput = function ColorInput({
   label,
   value,
   onChange,
 }: ColorInputProps) {
-  const handleTextChange = useCallback(
-    (nextValue: string) => {
+  const handleTextChange = (nextValue: string) => {
       if (HEX_INPUT_REGEX.test(nextValue)) {
         onChange(nextValue);
       }
-    },
-    [onChange]
-  );
+    }
 
   return (
     <div
@@ -1008,19 +1002,19 @@ const ColorInput = memo(function ColorInput({
       </div>
     </div>
   );
-});
+};
 
-const PrimitivesTab = memo(function PrimitivesTab({
+const PrimitivesTab = function PrimitivesTab({
   theme,
   dispatch,
   shell,
 }: ThemeEditorProps) {
   const [newScale, setNewScale] = useState("");
 
-  const handleAddScale = useCallback(() => {
+  const handleAddScale = () => {
     dispatch({ type: "add-scale", scale: newScale });
     setNewScale("");
-  }, [dispatch, newScale]);
+  };
 
   return (
     <div>
@@ -1122,9 +1116,9 @@ const PrimitivesTab = memo(function PrimitivesTab({
       </div>
     </div>
   );
-});
+};
 
-const SemanticsTab = memo(function SemanticsTab({
+const SemanticsTab = function SemanticsTab({
   theme,
   dispatch,
   shell,
@@ -1132,15 +1126,11 @@ const SemanticsTab = memo(function SemanticsTab({
   const [newName, setNewName] = useState("");
   const [newValue, setNewValue] = useState("");
 
-  const primitiveOptions = useMemo(
-    () =>
-      Object.entries(theme.primitives).flatMap(([scaleName]) =>
+  const primitiveOptions = Object.entries(theme.primitives).flatMap(([scaleName]) =>
         PRIMITIVE_STEPS.map((step) => `${scaleName}.${step}`)
-      ),
-    [theme.primitives]
-  );
+      )
 
-  const handleAddSemantic = useCallback(() => {
+  const handleAddSemantic = () => {
     const normalizedName = newName.trim();
     const normalizedValue = newValue.trim();
 
@@ -1158,7 +1148,7 @@ const SemanticsTab = memo(function SemanticsTab({
     });
     setNewName("");
     setNewValue("");
-  }, [dispatch, newName, newValue]);
+  };
 
   return (
     <div>
@@ -1300,9 +1290,9 @@ const SemanticsTab = memo(function SemanticsTab({
       </div>
     </div>
   );
-});
+};
 
-const TypographyTab = memo(function TypographyTab({
+const TypographyTab = function TypographyTab({
   theme,
   dispatch,
   shell,
@@ -1459,16 +1449,16 @@ const TypographyTab = memo(function TypographyTab({
       </div>
     </div>
   );
-});
+};
 
-const ExportModal = memo(function ExportModal({
+const ExportModal = function ExportModal({
   theme,
   onClose,
   shell,
 }: ExportModalProps) {
   const [copied, setCopied] = useState(false);
   const copyTimeoutRef = useRef<number | null>(null);
-  const code = useMemo(() => generateExport(theme), [theme]);
+  const code = generateExport(theme);
 
   useEffect(() => {
     return () => {
@@ -1478,7 +1468,7 @@ const ExportModal = memo(function ExportModal({
     };
   }, []);
 
-  const handleCopy = useCallback(async () => {
+  const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
@@ -1491,7 +1481,7 @@ const ExportModal = memo(function ExportModal({
     } catch {
       setCopied(false);
     }
-  }, [code]);
+  };
 
   return (
     <div
@@ -1603,9 +1593,9 @@ const ExportModal = memo(function ExportModal({
       </div>
     </div>
   );
-});
+};
 
-const AppHeader = memo(function AppHeader({
+const AppHeader = function AppHeader({
   activePreset,
   shell,
   themeName,
@@ -1711,9 +1701,9 @@ const AppHeader = memo(function AppHeader({
       </div>
     </div>
   );
-});
+};
 
-const PresetSidebar = memo(function PresetSidebar({
+const PresetSidebar = function PresetSidebar({
   activePreset,
   shell,
   onSelectPreset,
@@ -1854,9 +1844,9 @@ const PresetSidebar = memo(function PresetSidebar({
       </button>
     </div>
   );
-});
+};
 
-const EditorTabs = memo(function EditorTabs({
+const EditorTabs = function EditorTabs({
   activeTab,
   shell,
   onTabChange,
@@ -1905,9 +1895,9 @@ const EditorTabs = memo(function EditorTabs({
       })}
     </div>
   );
-});
+};
 
-const LivePreviewPanel = memo(function LivePreviewPanel({
+const LivePreviewPanel = function LivePreviewPanel({
   shell,
   themeName,
 }: LivePreviewProps) {
@@ -2210,16 +2200,16 @@ const LivePreviewPanel = memo(function LivePreviewPanel({
       </div>
     </div>
   );
-});
+};
 
-const GlobalTokenStyles = memo(function GlobalTokenStyles({
+const GlobalTokenStyles = function GlobalTokenStyles({
   theme,
 }: {
   theme: DesignTheme;
 }) {
-  const css = useMemo(() => buildGlobalTokenCSS(theme), [theme]);
+  const css = buildGlobalTokenCSS(theme)
   return <style>{css}</style>;
-});
+};
 
 export default function DesignTokenStudio() {
   const [theme, dispatch] = useReducer(
@@ -2236,7 +2226,7 @@ export default function DesignTokenStudio() {
 
   useDynamicGoogleFont(theme.fontFamily);
 
-  const applyPreset = useCallback((index: number) => {
+  const applyPreset = (index: number) => {
     const preset = PRESETS[index];
     if (!preset) {
       return;
@@ -2244,40 +2234,40 @@ export default function DesignTokenStudio() {
 
     setActivePreset(index);
     dispatch({ type: "apply-theme", theme: preset });
-  }, []);
+  };
 
-  const handleCreateBlankCanvas = useCallback(() => {
+  const handleCreateBlankCanvas = () => {
     setActivePreset(-1);
     dispatch({ type: "apply-theme", theme: BLANK_CANVAS_THEME });
-  }, []);
+  }
 
-  const handleReset = useCallback(() => {
+  const handleReset = () => {
     if (activePreset < 0) {
       return;
     }
 
     applyPreset(activePreset);
-  }, [activePreset, applyPreset]);
+  }
 
-  const handleThemeNameChange = useCallback((name: string) => {
+  const handleThemeNameChange = (name: string) => {
     dispatch({ type: "set-theme-name", name });
-  }, []);
+  }
 
-  const openExportModal = useCallback(() => {
+  const openExportModal = () => {
     setShowExport(true);
-  }, []);
+  }
 
-  const closeExportModal = useCallback(() => {
+  const closeExportModal = () => {
     setShowExport(false);
-  }, []);
+  }
 
-  const startEditingName = useCallback(() => {
+  const startEditingName = () => {
     setEditingName(true);
-  }, []);
+  };
 
-  const stopEditingName = useCallback(() => {
+  const stopEditingName = () => {
     setEditingName(false);
-  }, []);
+  };
 
   return (
     <div
