@@ -1,75 +1,252 @@
-# React + TypeScript + Vite
+<div align="center">
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<!-- Hero Logo -->
+<img src="https://raw.githubusercontent.com/yourusername/alloy/main/.github/assets/logo.svg" width="120" alt="Alloy Logo">
 
-Currently, two official plugins are available:
+# Alloy
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### *The Design Token Studio*
 
-## React Compiler
+[![npm version](https://img.shields.io/npm/v/@alloy/studio?style=flat-square&colorA=0a0a0a&colorB=ffc404)](https://www.npmjs.com/package/@alloy/studio)
+[![License](https://img.shields.io/github/license/yourusername/alloy?style=flat-square&colorA=0a0a0a&colorB=22c55e)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/yourusername/alloy?style=flat-square&colorA=0a0a0a&colorB=0ea5e9)](https://github.com/yourusername/alloy/stargazers)
+[![React](https://img.shields.io/badge/React-19-0a0a0a?style=flat-square&logo=react&logoColor=61DAFB)](https://react.dev)
+[![Tailwind](https://img.shields.io/badge/Tailwind-v4-0a0a0a?style=flat-square&logo=tailwindcss&logoColor=06B6D4)](https://tailwindcss.com)
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+**Build, visualize, and export complete design systems — primitives, semantics, typography, and utilities — in one reactive studio.**
 
-Note: This will impact Vite dev & build performances.
+[🚀 Live Demo](https://alloy-studio.vercel.app) · [📖 Documentation](https://alloy-studio.vercel.app/docs) · [💬 Discussions](https://github.com/yourusername/alloy/discussions)
 
-## Expanding the ESLint configuration
+</div>
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+<div align="center">
+  <img src="https://raw.githubusercontent.com/yourusername/alloy/main/.github/assets/hero.png" width="100%" alt="Alloy Studio Interface">
+</div>
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## ✨ What is Alloy?
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Alloy is a **visual design token editor** that lets you construct entire design systems from the ground up. Instead of hand-writing hundreds of CSS variables, you:
+
+1. **Define primitives** — 9-step color scales (100→900) for any palette.
+2. **Map semantics** — Alias tokens like `background-neutral-primary` to `grey.100`.
+3. **Tune typography** — Size, line-height, letter-spacing, and weight per token.
+4. **Export** — Generate production-ready **Tailwind v4** CSS with `@theme`, `@utility`, and breakpoints.
+
+> *Primitives are raw ore. Semantics are the alloy. This is the forge.*
+
+---
+
+## 🎬 Features
+
+<table>
+<tr>
+<td width="50%">
+
+#### 🎨 Primitive Scales
+Create and edit full 9-step color scales. Add custom palettes (e.g., `teal`, `rose`, `sand`) dynamically. Every hex value updates the live preview instantly.
+
+</td>
+<td width="50%">
+
+#### 🔗 Semantic Aliasing
+Map meaningful names to primitives. Change `grey.100` once, and every `background-neutral-*` token updates automatically. No find-and-replace hell.
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+#### 🔤 Typography System
+Define `caption` through `h1` with precise control over size, line-height, letter-spacing, and weight. See live specimens render in your chosen Google Font.
+
+</td>
+<td width="50%">
+
+#### ⚡️ Tailwind v4 Export
+Generates a single `.css` file with `@theme`, `@utility`, breakpoints, and semantic mappings. Drop it into any Tailwind v4 project and go.
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+#### 🌗 Self-Theming Studio
+The entire application chrome adapts to your active token set. Designing a dark mode system? The studio goes dark. Light mode? It glows. The tool *is* the preview.
+
+</td>
+<td width="50%">
+
+#### 📋 One-Click Copy
+Copy the full generated CSS to your clipboard in one click. No build step, no config file wrangling.
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js `>= 18`
+- React `>= 18`
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/alloy.git
+cd alloy
+
+# Install dependencies
+npm install
+
+# Start the dev server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open `http://localhost:5173` and start forging tokens.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 📖 Usage
+
+### 1. Define Primitives
+
+Start with your base color scales. Alloy ships with sensible defaults for `grey`, `primary`, `secondary`, and `pink`, but you can add any scale you need.
+
+```css
+/* Generated output */
+@theme {
+  --color-grey-100: #f4f4f2;
+  --color-grey-200: #eae9e5;
+  --color-grey-300: #dfddd8;
+  --color-grey-400: #cac7be;
+  --color-grey-500: #a29f98;
+  --color-grey-600: #797772;
+  --color-grey-700: #51504c;
+  --color-grey-800: #282826;
+  --color-grey-900: #0a0a0a;
+
+  --color-primary-500: #ffc404;
+  /* ... */
+}
 ```
+
+### 2. Map Semantics
+
+Create aliases that describe *intent*, not *value*.
+
+```css
+@theme {
+  --color-background-neutral-primary: var(--color-grey-100);
+  --color-text-neutral-primary: var(--color-grey-900);
+  --color-border-neutral-active: var(--color-primary-500);
+}
+```
+
+### 3. Set Typography
+
+Configure your type scale with exact measurements.
+
+```css
+@theme {
+  --text-h1: 3.063rem;
+  --text-h1--line-height: 120%;
+  --text-h1--letter-spacing: 0;
+}
+
+@utility type-h1 {
+  font-family: var(--font-sans);
+  font-size: var(--text-h1);
+  line-height: var(--text-h1--line-height);
+  letter-spacing: var(--text-h1--letter-spacing);
+  font-weight: 500;
+}
+```
+
+### 4. Export & Ship
+
+Click **Export** → **Copy CSS** → Paste into your `globals.css`. Done.
+
+---
+
+## 🏗 Architecture
+
+```
+┌─────────────────────────────────────────────┐
+│              Alloy Studio Shell              │
+│  (Self-themed via active design tokens)      │
+├──────────────┬──────────────┬───────────────┤
+│  Presets     │   Editor     │   Live        │
+│  Sidebar     │   Tabs       │   Preview     │
+│              │              │   Panel       │
+│  • Manrope   │  • Primitives│               │
+│  • Midnight  │  • Semantics │  • Mock UI    │
+│  • Custom    │  • Typography│  • Type Spec  │
+└──────────────┴──────────────┴───────────────┘
+                      │
+                      ▼
+            ┌──────────────────┐
+            │  Export Engine   │
+            │  (Tailwind v4)   │
+            └──────────────────┘
+```
+
+- **React + Hooks** — State is lifted to the root; every panel reacts to token changes.
+- **Dynamic Font Loading** — Google Fonts are injected via `<link>` when you change the font family.
+- **Semantic Resolver** — `resolveToken()` maps `scale.step` references to hex values in real time.
+- **Shell Theme Hook** — `useShellTheme()` computes the entire app chrome from your semantic tokens, so the editor *becomes* your design.
+
+---
+
+## 🛠 Export Formats
+
+| Format | Status | Notes |
+|--------|--------|-------|
+| **Tailwind v4** | ✅ Ready | `@theme`, `@utility`, `@import "tailwindcss"` |
+| **CSS Variables** | ✅ Ready | Plain `:root` custom properties |
+| **Tailwind v3** | 🚧 Planned | `tailwind.config.js` object export |
+| **Style Dictionary** | 🚧 Planned | JSON for multi-platform builds |
+| **Figma Variables** | 💡 Idea | Plugin for bi-directional sync |
+
+---
+
+## 🧩 Built With
+
+- [React](https://react.dev) — UI framework
+- [Tailwind CSS](https://tailwindcss.com) — The target system
+- [Lucide React](https://lucide.dev) — Iconography
+- [Google Fonts API](https://fonts.google.com) — Dynamic font loading
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Whether it's a new preset, an export format, or a bug fix:
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feat/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feat/amazing-feature`)
+5. Open a Pull Request
+
+Please read our [Contributing Guide](CONTRIBUTING.md) for code standards and commit conventions.
+
+---
+
+## 📜 License
+
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
+
+---
+
+<div align="center">
+
+**Made with 🔥 by the Alloy community**
+
+[⬆ Back to Top](#alloy)
+
+</div>
