@@ -4,6 +4,13 @@
   box-sizing: border-box;
 }
 
-html, body, #root {
-  height: 100%;
+.theme-transition,
+.theme-transition button,
+.theme-transition input,
+.theme-transition select,
+.theme-transition pre {
+  transition: background-color 0.25s ease-out,
+              color 0.2s ease-out,
+              border-color 0.2s ease-out,
+              box-shadow 0.2s ease-out;
 }

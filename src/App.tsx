@@ -79,6 +79,7 @@ export default function DesignTokenStudio() {
 
   return (
     <div
+      className="theme-transition"
       style={{
         display: "flex",
         flexDirection: "column",
