@@ -2221,7 +2221,7 @@ const GlobalTokenStyles = memo(function GlobalTokenStyles({
   return <style>{css}</style>;
 });
 
-export default function DesignTokenStudio(): JSX.Element {
+export default function DesignTokenStudio() {
   const [theme, dispatch] = useReducer(
     themeReducer,
     DEFAULT_PRESET,
