@@ -1,4 +1,11 @@
-import { lazy, Suspense, useReducer, useState } from "react";
+import {
+  lazy,
+  Suspense,
+  startTransition,
+  useDeferredValue,
+  useReducer,
+  useState,
+} from "react";
 
 import { DEFAULT_PRESET, BLANK_CANVAS_THEME, PRESETS } from "./constants";
 import { themeReducer } from "./utils/themeReducer";
@@ -18,11 +25,16 @@ import {
 
 import type { TabId } from "./types";
 
-const ExportModal = lazy(() =>
+const loadExportModal = () =>
   import("./components/ExportModal").then((module) => ({
     default: module.ExportModal,
-  }))
-);
+  }));
+
+const ExportModal = lazy(loadExportModal);
+
+function preloadExportModal(): void {
+  void loadExportModal();
+}
 
 export default function DesignTokenStudio() {
   const [theme, dispatch] = useReducer(
@@ -36,6 +48,8 @@ export default function DesignTokenStudio() {
   const [editingName, setEditingName] = useState(false);
 
   const shell = useShellTheme(theme);
+  const deferredTheme = useDeferredValue(theme);
+  const previewShell = useShellTheme(deferredTheme);
 
   useDynamicGoogleFont(theme.fontFamily);
 
@@ -45,13 +59,17 @@ export default function DesignTokenStudio() {
       return;
     }
 
-    setActivePreset(index);
-    dispatch({ type: "apply-theme", theme: preset });
+    startTransition(() => {
+      setActivePreset(index);
+      dispatch({ type: "apply-theme", theme: preset });
+    });
   };
 
   const handleCreateBlankCanvas = () => {
-    setActivePreset(-1);
-    dispatch({ type: "apply-theme", theme: BLANK_CANVAS_THEME });
+    startTransition(() => {
+      setActivePreset(-1);
+      dispatch({ type: "apply-theme", theme: BLANK_CANVAS_THEME });
+    });
   };
 
   const handleReset = () => {
@@ -67,6 +85,7 @@ export default function DesignTokenStudio() {
   };
 
   const openExportModal = () => {
+    preloadExportModal();
     setShowExport(true);
   };
 
@@ -80,6 +99,12 @@ export default function DesignTokenStudio() {
 
   const stopEditingName = () => {
     setEditingName(false);
+  };
+
+  const handleTabChange = (tab: TabId) => {
+    startTransition(() => {
+      setActiveTab(tab);
+    });
   };
 
   return (
@@ -107,6 +132,7 @@ export default function DesignTokenStudio() {
         onThemeNameChange={handleThemeNameChange}
         onReset={handleReset}
         onOpenExport={openExportModal}
+        onPreloadExport={preloadExportModal}
       />
 
       <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
@@ -129,7 +155,7 @@ export default function DesignTokenStudio() {
           <EditorTabs
             activeTab={activeTab}
             shell={shell}
-            onTabChange={setActiveTab}
+            onTabChange={handleTabChange}
           />
           <div style={{ flex: 1, overflowY: "auto", padding: 20 }}>
             {activeTab === "primitives" ? (
@@ -144,12 +170,15 @@ export default function DesignTokenStudio() {
           </div>
         </div>
 
-        <LivePreviewPanel shell={shell} themeName={theme.name} />
+        <LivePreviewPanel
+          shell={previewShell}
+          themeName={deferredTheme.name}
+        />
       </div>
 
       {showExport ? (
         <Suspense fallback={null}>
-        <ExportModal theme={theme} onClose={closeExportModal} shell={shell} />
+          <ExportModal theme={theme} onClose={closeExportModal} shell={shell} />
         </Suspense>
       ) : null}
     </div>

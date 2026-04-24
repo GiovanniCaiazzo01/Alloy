@@ -12,6 +12,7 @@ export function AppHeader({
   onThemeNameChange,
   onReset,
   onOpenExport,
+  onPreloadExport,
 }: HeaderProps) {
   return (
     <div
@@ -95,12 +96,20 @@ export function AppHeader({
         >
           <RotateCcw size={11} /> Reset
         </button>
-        <button type="button" onClick={onOpenExport} style={buttonStyle(shell)}>
+        <button
+          type="button"
+          onClick={onOpenExport}
+          onMouseEnter={onPreloadExport}
+          onFocus={onPreloadExport}
+          style={buttonStyle(shell)}
+        >
           <Code size={11} /> Export
         </button>
         <button
           type="button"
           onClick={onOpenExport}
+          onMouseEnter={onPreloadExport}
+          onFocus={onPreloadExport}
           style={primaryButtonStyle(shell)}
         >
           <Copy size={11} /> Copy CSS

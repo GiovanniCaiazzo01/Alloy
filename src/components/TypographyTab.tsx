@@ -46,6 +46,7 @@ export function TypographyTab({
         {Object.entries(theme.typography).map(([tokenName, token]) => (
           <div
             key={tokenName}
+            className="typography-token-card"
             style={{
               background: shell.colors.bg2,
               border: `1px solid ${shell.colors.border}`,

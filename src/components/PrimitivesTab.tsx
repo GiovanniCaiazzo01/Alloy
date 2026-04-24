@@ -22,7 +22,11 @@ export function PrimitivesTab({
     <div>
       <SectionTitle shell={shell}>Color Primitives</SectionTitle>
       {Object.entries(theme.primitives).map(([scaleName, steps]) => (
-        <div key={scaleName} style={{ marginBottom: 22 }}>
+        <div
+          key={scaleName}
+          className="primitive-scale-group"
+          style={{ marginBottom: 22 }}
+        >
           <div
             style={{
               display: "flex",

@@ -1,8 +1,8 @@
-import type { DesignTheme, ShellTheme } from "../types";
+import type { ShellTheme, ShellThemeSource } from "../types";
 import { MONO_FONT_FAMILY } from "../constants/config";
 import { resolveToken, isDarkColor } from "../utils/tokens";
 
-export function useShellTheme(theme: DesignTheme): ShellTheme {
+export function useShellTheme(theme: ShellThemeSource): ShellTheme {
   return (() => {
     const semanticMap = new Map(
       theme.semantics

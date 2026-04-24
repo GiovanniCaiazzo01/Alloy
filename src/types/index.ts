@@ -35,6 +35,11 @@ export type DesignTheme = {
   breakpoints: BreakpointCollection;
 };
 
+export type ShellThemeSource = Pick<
+  DesignTheme,
+  "fontFamily" | "primitives" | "semantics" | "typography"
+>;
+
 export type ShellTheme = {
   isDark: boolean;
   fontFamily: string;
@@ -124,6 +129,7 @@ export type HeaderProps = {
   onThemeNameChange: (name: string) => void;
   onReset: () => void;
   onOpenExport: () => void;
+  onPreloadExport: () => void;
 };
 
 export type PresetSidebarProps = {

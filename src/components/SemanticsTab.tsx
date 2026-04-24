@@ -64,6 +64,7 @@ export function SemanticsTab({
         {theme.semantics.map((token, index) => (
           <div
             key={`${token.name}-${index}`}
+            className="semantic-token-row"
             style={{
               display: "flex",
               alignItems: "center",

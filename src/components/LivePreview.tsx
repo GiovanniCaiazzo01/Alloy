@@ -2,6 +2,12 @@ import type { LivePreviewProps } from "../types";
 import { PREVIEW_CARDS } from "../constants/config";
 import { primaryButtonStyle, secondaryButtonStyle } from "../styles/buttons";
 
+const PREVIEW_NAV_ITEMS = ["Docs", "Blog"] as const;
+const STATIC_PREVIEW_BADGES = [
+  { label: "Success", bg: "#22c55e22", fg: "#22c55e" },
+  { label: "Warning", bg: "#f59e0b22", fg: "#f59e0b" },
+] as const;
+
 export function LivePreviewPanel({
   shell,
   themeName,
@@ -82,7 +88,7 @@ export function LivePreviewPanel({
               {themeName}
             </span>
             <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-              {["Docs", "Blog"].map((label) => (
+              {PREVIEW_NAV_ITEMS.map((label) => (
                 <span
                   key={label}
                   style={{ fontSize: 9, color: shell.colors.fg3 }}
@@ -232,8 +238,7 @@ export function LivePreviewPanel({
           >
             {[
               { label: "Primary", bg: shell.colors.brandBg, fg: "#fff" },
-              { label: "Success", bg: "#22c55e22", fg: "#22c55e" },
-              { label: "Warning", bg: "#f59e0b22", fg: "#f59e0b" },
+              ...STATIC_PREVIEW_BADGES,
             ].map((badge) => (
               <span
                 key={badge.label}
