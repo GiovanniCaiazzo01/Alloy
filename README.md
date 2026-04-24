@@ -15,7 +15,7 @@
 
 **Build, visualize, and export complete design systems — primitives, semantics, typography, and utilities — in one reactive studio.**
 
-[🚀 Live Demo](https://alloy-studio.vercel.app) · [📖 Documentation](https://alloy-studio.vercel.app/docs) · [💬 Discussions](https://github.com/yourusername/alloy/discussions)
+[🚀 Live Demo](https://giovannicaiazzo01.github.io/Alloy/)
 
 </div>
 
