@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { lazy, Suspense, useReducer, useState } from "react";
 
 import { DEFAULT_PRESET, BLANK_CANVAS_THEME, PRESETS } from "./constants";
 import { themeReducer } from "./utils/themeReducer";
@@ -13,11 +13,16 @@ import {
   PrimitivesTab,
   SemanticsTab,
   TypographyTab,
-  ExportModal,
   LivePreviewPanel,
 } from "./components";
 
 import type { TabId } from "./types";
+
+const ExportModal = lazy(() =>
+  import("./components/ExportModal").then((module) => ({
+    default: module.ExportModal,
+  }))
+);
 
 export default function DesignTokenStudio() {
   const [theme, dispatch] = useReducer(
@@ -143,7 +148,9 @@ export default function DesignTokenStudio() {
       </div>
 
       {showExport ? (
+        <Suspense fallback={null}>
         <ExportModal theme={theme} onClose={closeExportModal} shell={shell} />
+        </Suspense>
       ) : null}
     </div>
   );
