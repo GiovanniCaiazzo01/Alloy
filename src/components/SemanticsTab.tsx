@@ -3,7 +3,6 @@ import { Hash, Trash2 } from "lucide-react";
 import type { ThemeEditorProps } from "../types";
 import { PRIMITIVE_STEPS } from "../types";
 import { SectionTitle } from "./ui/SectionTitle";
-import { inputStyle, primaryButtonStyle } from "../styles/buttons";
 import { resolveToken } from "../utils/tokens";
 
 export function SemanticsTab({
@@ -42,40 +41,23 @@ export function SemanticsTab({
     <div>
       <SectionTitle shell={shell}>Semantic Tokens</SectionTitle>
       <p
-        style={{
-          fontSize: 11,
-          color: shell.colors.fg3,
-          marginBottom: 16,
-          lineHeight: 1.6,
-        }}
+        className="text-[11px] mb-4 leading-relaxed"
+        style={{ color: shell.colors.fg3 }}
       >
-        Map semantic names to primitive values. Use <code>scale.step</code>{" "}
-        syntax or raw hex.
+        Map semantic names to primitive values. Use <code>scale.step</code> syntax or raw hex.
       </p>
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 8,
-          marginBottom: 20,
-        }}
-      >
+      <div className="flex flex-col gap-2 mb-5">
         {theme.semantics.map((token, index) => (
           <div
             key={`${token.name}-${index}`}
-            className="semantic-token-row"
+            className="flex items-center gap-2 rounded-lg border px-2.5 py-2 group"
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
               background: shell.colors.bg2,
-              border: `1px solid ${shell.colors.border}`,
-              borderRadius: 8,
-              padding: "8px 10px",
+              borderColor: shell.colors.border,
             }}
           >
-            <Hash size={12} color={shell.colors.muted} />
+            <Hash size={12} style={{ color: shell.colors.muted }} />
             <input
               value={token.name}
               onChange={(event) =>
@@ -85,13 +67,9 @@ export function SemanticsTab({
                   changes: { name: event.target.value },
                 })
               }
+              className="flex-[2] bg-transparent border-none outline-none text-[11px]"
               style={{
-                flex: 2,
-                background: "transparent",
-                border: "none",
-                outline: "none",
                 color: shell.colors.fg,
-                fontSize: 11,
                 fontFamily: shell.monoFont,
               }}
             />
@@ -105,34 +83,24 @@ export function SemanticsTab({
                   changes: { value: event.target.value },
                 })
               }
+              className="flex-[1.5] bg-transparent border-none outline-none text-[11px]"
               style={{
-                flex: 1.5,
-                background: "transparent",
-                border: "none",
-                outline: "none",
                 color: shell.colors.fg2,
-                fontSize: 11,
                 fontFamily: shell.monoFont,
               }}
             />
             <div
+              className="w-[18px] h-[18px] rounded-md border"
               style={{
-                width: 18,
-                height: 18,
-                borderRadius: 4,
                 background: resolveToken(token.value, theme.primitives),
-                border: `1px solid ${shell.colors.border}`,
+                borderColor: shell.colors.border,
               }}
             />
             <button
               type="button"
               onClick={() => dispatch({ type: "remove-semantic", index })}
-              style={{
-                background: "transparent",
-                border: "none",
-                cursor: "pointer",
-                color: shell.colors.muted,
-              }}
+              className="bg-transparent border-none cursor-pointer p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+              style={{ color: shell.colors.muted }}
               aria-label={`Remove semantic token ${token.name}`}
             >
               <Trash2 size={12} />
@@ -141,38 +109,51 @@ export function SemanticsTab({
         ))}
       </div>
 
-      <div style={{ display: "flex", gap: 8 }}>
-        <input
-          placeholder="Token name (e.g. text-brand-primary)"
-          value={newName}
-          onChange={(event) => setNewName(event.target.value)}
-          style={{
-            ...inputStyle(shell),
-            flex: 2,
-            fontFamily: shell.fontFamily,
-          }}
-        />
-        <select
-          value={newValue}
-          onChange={(event) => setNewValue(event.target.value)}
-          style={{
-            ...inputStyle(shell),
-            flex: 1.5,
-            fontFamily: shell.fontFamily,
-            cursor: "pointer",
-          }}
-        >
-          <option value="">Select primitive…</option>
-          {primitiveOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
+      <div className="flex gap-2 items-end">
+        <div className="flex-[2]">
+          <div className="text-[9px] uppercase font-bold tracking-wider mb-1 px-1 opacity-50">Token Name</div>
+          <input
+            placeholder="e.g. text-primary"
+            value={newName}
+            onChange={(event) => setNewName(event.target.value)}
+            className="w-full px-3 py-1.5 rounded-md border outline-none text-[11px]"
+            style={{
+              background: shell.colors.bg,
+              borderColor: shell.colors.border,
+              color: shell.colors.fg,
+              fontFamily: shell.fontFamily,
+            }}
+          />
+        </div>
+        <div className="flex-[1.5]">
+          <div className="text-[9px] uppercase font-bold tracking-wider mb-1 px-1 opacity-50">Value</div>
+          <select
+            value={newValue}
+            onChange={(event) => setNewValue(event.target.value)}
+            className="w-full px-2 py-1.5 rounded-md border outline-none text-[11px] cursor-pointer"
+            style={{
+              background: shell.colors.bg,
+              borderColor: shell.colors.border,
+              color: shell.colors.fg,
+              fontFamily: shell.fontFamily,
+            }}
+          >
+            <option value="">Select primitive…</option>
+            {primitiveOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
         <button
           type="button"
           onClick={handleAddSemantic}
-          style={primaryButtonStyle(shell)}
+          className="px-4 py-1.5 rounded-md text-[11px] font-bold cursor-pointer transition-all h-[31px]"
+          style={{
+            background: shell.colors.brandBg,
+            color: shell.colors.brandText,
+          }}
         >
           Add
         </button>

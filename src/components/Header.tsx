@@ -1,6 +1,5 @@
 import { RotateCcw, Code, Copy } from "lucide-react";
 import type { HeaderProps } from "../types";
-import { inputStyle, buttonStyle, primaryButtonStyle } from "../styles/buttons";
 
 export function AppHeader({
   activePreset,
@@ -16,41 +15,29 @@ export function AppHeader({
 }: HeaderProps) {
   return (
     <div
+      className="flex items-center justify-between px-4 py-2.5 border-b flex-shrink-0 z-10 sticky top-0"
       style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "10px 18px",
-        borderBottom: `1px solid ${shell.colors.border}`,
+        borderColor: shell.colors.border,
         background: shell.colors.bg2,
-        flexShrink: 0,
-        zIndex: 10,
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      <div className="flex items-center gap-2.5">
         <div
+          className="w-2 h-2 rounded-full"
           style={{
-            width: 8,
-            height: 8,
-            borderRadius: "50%",
             background: shell.colors.brandBg,
             boxShadow: `0 0 12px ${shell.colors.brand}88`,
           }}
         />
         <span
-          style={{
-            fontSize: 13,
-            fontWeight: 800,
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: shell.colors.fg,
-          }}
+          className="hidden sm:inline-block text-[13px] font-extrabold tracking-widest uppercase"
+          style={{ color: shell.colors.fg }}
         >
           Token Studio
         </span>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+      <div className="flex items-center gap-1.5 flex-1 justify-center px-4">
         {editingName ? (
           <input
             autoFocus
@@ -62,23 +49,18 @@ export function AppHeader({
                 onStopEditingName();
               }
             }}
+            className="px-2 py-1 text-[11px] outline-none rounded bg-transparent border max-w-[120px] sm:max-w-none"
             style={{
-              ...inputStyle(shell),
-              padding: "4px 10px",
+              borderColor: shell.colors.border,
+              color: shell.colors.fg,
               fontFamily: shell.monoFont,
             }}
           />
         ) : (
           <span
             onClick={onStartEditingName}
-            style={{
-              fontSize: 11,
-              color: shell.colors.fg3,
-              cursor: "pointer",
-              padding: "4px 8px",
-              borderRadius: 5,
-              border: "1px dashed transparent",
-            }}
+            className="text-[11px] cursor-pointer px-2 py-1 rounded truncate max-w-[120px] sm:max-w-none hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+            style={{ color: shell.colors.fg3 }}
             title="Click to rename"
           >
             {themeName}
@@ -86,33 +68,47 @@ export function AppHeader({
         )}
       </div>
 
-      <div style={{ display: "flex", gap: 8 }}>
+      <div className="flex gap-2">
         <button
           type="button"
           onClick={onReset}
-          style={buttonStyle(shell, { disabled: activePreset < 0 })}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[11px] font-medium transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed border"
+          style={{
+            borderColor: shell.colors.border,
+            background: shell.colors.bg,
+            color: shell.colors.fg,
+          }}
           title="Reset to preset"
           disabled={activePreset < 0}
         >
-          <RotateCcw size={11} /> Reset
+          <RotateCcw size={11} /> <span className="hidden md:inline">Reset</span>
         </button>
         <button
           type="button"
           onClick={onOpenExport}
           onMouseEnter={onPreloadExport}
           onFocus={onPreloadExport}
-          style={buttonStyle(shell)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[11px] font-medium transition-all cursor-pointer border"
+          style={{
+            borderColor: shell.colors.border,
+            background: shell.colors.bg,
+            color: shell.colors.fg,
+          }}
         >
-          <Code size={11} /> Export
+          <Code size={11} /> <span className="hidden sm:inline">Export</span>
         </button>
         <button
           type="button"
           onClick={onOpenExport}
           onMouseEnter={onPreloadExport}
           onFocus={onPreloadExport}
-          style={primaryButtonStyle(shell)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[11px] font-medium transition-all cursor-pointer"
+          style={{
+            background: shell.colors.brandBg,
+            color: shell.colors.brandText,
+          }}
         >
-          <Copy size={11} /> Copy CSS
+          <Copy size={11} /> <span className="hidden md:inline">Copy CSS</span>
         </button>
       </div>
     </div>

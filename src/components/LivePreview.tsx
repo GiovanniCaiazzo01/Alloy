@@ -1,6 +1,5 @@
 import type { LivePreviewProps } from "../types";
 import { PREVIEW_CARDS } from "../constants/config";
-import { primaryButtonStyle, secondaryButtonStyle } from "../styles/buttons";
 
 const PREVIEW_NAV_ITEMS = ["Docs", "Blog"] as const;
 const STATIC_PREVIEW_BADGES = [
@@ -14,96 +13,66 @@ export function LivePreviewPanel({
 }: LivePreviewProps) {
   return (
     <div
+      className="w-full h-[250px] md:h-[320px] overflow-y-auto flex-shrink-0 border-t transition-all"
       style={{
-        width: 360,
-        borderLeft: `1px solid ${shell.colors.border}`,
-        overflowY: "auto",
+        borderColor: shell.colors.border,
         background: shell.colors.bg2,
-        flexShrink: 0,
       }}
     >
       <div
+        className="px-4 py-3 border-b text-[8px] tracking-[0.2em] uppercase font-bold flex items-center gap-2"
         style={{
-          padding: "12px 16px",
-          borderBottom: `1px solid ${shell.colors.border}`,
-          fontSize: 8,
-          letterSpacing: "0.2em",
+          borderColor: shell.colors.border,
           color: shell.colors.muted,
-          textTransform: "uppercase",
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          fontWeight: 700,
         }}
       >
         <div
-          style={{
-            width: 6,
-            height: 6,
-            borderRadius: "50%",
-            background: "#22c55e",
-            boxShadow: "0 0 8px #22c55e",
-          }}
+          className="w-1.5 h-1.5 rounded-full bg-[#22c55e] shadow-[0_0_8px_#22c55e]"
         />
         Live Preview
         <span
-          style={{
-            color: shell.colors.muted,
-            marginLeft: "auto",
-            fontSize: 8,
-            letterSpacing: "0.1em",
-          }}
+          className="ml-auto text-[8px] tracking-widest opacity-60"
+          style={{ color: shell.colors.muted }}
         >
           {themeName}
         </span>
       </div>
-      <div style={{ padding: 14 }}>
+      <div className="p-3.5">
         <div
+          className="rounded-xl overflow-hidden border shadow-lg transition-shadow"
           style={{
             background: shell.colors.bg,
-            borderRadius: 10,
-            overflow: "hidden",
-            border: `1px solid ${shell.colors.border}`,
-            boxShadow: `0 4px 30px ${shell.isDark ? "#00000066" : "#00000012"}`,
+            borderColor: shell.colors.border,
           }}
         >
           <div
+            className="px-3.5 py-2.5 border-b flex items-center justify-between"
             style={{
               background: shell.colors.bg2,
-              padding: "10px 14px",
-              borderBottom: `1px solid ${shell.colors.border}`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
+              borderColor: shell.colors.border,
             }}
           >
             <span
-              style={{
-                fontWeight: 700,
-                color: shell.colors.fg,
-                fontSize: 13,
-                letterSpacing: "-0.01em",
-              }}
+              className="font-bold text-[13px] tracking-tight"
+              style={{ color: shell.colors.fg }}
             >
               {themeName}
             </span>
-            <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <div className="flex gap-2.5 items-center">
               {PREVIEW_NAV_ITEMS.map((label) => (
                 <span
                   key={label}
-                  style={{ fontSize: 9, color: shell.colors.fg3 }}
+                  className="text-[9px]"
+                  style={{ color: shell.colors.fg3 }}
                 >
                   {label}
                 </span>
               ))}
               <span
+                className="text-[9px] px-2 py-0.5 rounded font-bold"
                 style={{
-                  fontSize: 9,
                   background: shell.colors.brandBg,
                   color: "#fff",
-                  padding: "3px 9px",
-                  borderRadius: 4,
-                  fontWeight: 700,
                 }}
               >
                 Get started
@@ -112,144 +81,112 @@ export function LivePreviewPanel({
           </div>
 
           <div
+            className="px-3.5 py-5 border-b"
             style={{
-              padding: "22px 14px 18px",
               background: `linear-gradient(160deg, ${shell.colors.bg} 0%, ${shell.colors.bg2} 100%)`,
-              borderBottom: `1px solid ${shell.colors.border}`,
+              borderColor: shell.colors.border,
             }}
           >
             <div
-              style={{
-                fontSize: 8,
-                color: shell.colors.brandBg,
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                marginBottom: 8,
-                fontWeight: 700,
-              }}
+              className="text-[8px] uppercase font-bold tracking-widest mb-2"
+              style={{ color: shell.colors.brandBg }}
             >
               ✦ New release
             </div>
             <div
-              style={{
-                fontWeight: 700,
-                color: shell.colors.fg,
-                fontSize: 20,
-                lineHeight: 1.15,
-                marginBottom: 10,
-                letterSpacing: "-0.02em",
-              }}
+              className="font-bold text-xl leading-none mb-2.5 tracking-tight"
+              style={{ color: shell.colors.fg }}
             >
               Design systems
               <br />
               made semantic
             </div>
             <div
-              style={{
-                fontSize: 11,
-                color: shell.colors.fg3,
-                lineHeight: 1.6,
-                marginBottom: 14,
-              }}
+              className="text-[11px] leading-relaxed mb-3.5"
+              style={{ color: shell.colors.fg3 }}
             >
-              Primitive scales, semantic aliases, and type utilities in one
-              place.
+              Primitive scales, semantic aliases, and type utilities in one place.
             </div>
-            <div style={{ display: "flex", gap: 8 }}>
-              <button type="button" style={primaryButtonStyle(shell)}>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                className="px-3 py-1.5 rounded-md text-[10px] font-bold cursor-pointer transition-all"
+                style={{
+                  background: shell.colors.brandBg,
+                  color: "#fff",
+                }}
+              >
                 Get Started →
               </button>
-              <button type="button" style={secondaryButtonStyle(shell)}>
+              <button
+                type="button"
+                className="px-3 py-1.5 rounded-md text-[10px] font-bold cursor-pointer transition-all border"
+                style={{
+                  borderColor: shell.colors.border,
+                  background: "transparent",
+                  color: shell.colors.fg2,
+                }}
+              >
                 Learn more
               </button>
             </div>
           </div>
 
-          <div
-            style={{
-              padding: 12,
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: 8,
-            }}
-          >
+          <div className="p-3 grid grid-cols-2 gap-2">
             {PREVIEW_CARDS.map((card) => (
               <div
                 key={card.title}
+                className="rounded-lg border p-2.5 transition-colors"
                 style={{
                   background: shell.colors.bg2,
-                  border: `1px solid ${shell.colors.border}`,
-                  borderRadius: 8,
-                  padding: "10px 11px",
+                  borderColor: shell.colors.border,
                 }}
               >
                 <div
-                  style={{
-                    fontSize: 18,
-                    marginBottom: 4,
-                    color: shell.colors.brandBg,
-                  }}
+                  className="text-lg mb-1"
+                  style={{ color: shell.colors.brandBg }}
                 >
                   {card.icon}
                 </div>
                 <div
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 700,
-                    color: shell.colors.fg,
-                    marginBottom: 3,
-                  }}
+                  className="text-[11px] font-bold mb-0.5"
+                  style={{ color: shell.colors.fg }}
                 >
                   {card.title}
                 </div>
-                <div style={{ fontSize: 9, color: shell.colors.fg3 }}>
+                <div className="text-[9px]" style={{ color: shell.colors.fg3 }}>
                   {card.desc}
                 </div>
               </div>
             ))}
           </div>
 
-          <div style={{ padding: "0 12px 10px" }}>
+          <div className="px-3 pb-2.5">
             <div
+              className="flex items-center rounded-md border px-2.5 py-1.5 gap-1.5"
               style={{
-                display: "flex",
-                alignItems: "center",
                 background: shell.colors.bg2,
-                border: `1px solid ${shell.colors.border}`,
-                borderRadius: 6,
-                padding: "7px 10px",
-                gap: 6,
+                borderColor: shell.colors.border,
               }}
             >
-              <span style={{ color: shell.colors.fg3, fontSize: 11 }}>🔍</span>
-              <span style={{ fontSize: 10, color: shell.colors.fg3 }}>
+              <span className="text-xs grayscale opacity-50">🔍</span>
+              <span className="text-[10px]" style={{ color: shell.colors.fg3 }}>
                 Search tokens...
               </span>
             </div>
           </div>
 
-          <div
-            style={{
-              padding: "0 12px 12px",
-              display: "flex",
-              gap: 5,
-              flexWrap: "wrap",
-            }}
-          >
+          <div className="px-3 pb-3 flex gap-1.5 flex-wrap">
             {[
               { label: "Primary", bg: shell.colors.brandBg, fg: "#fff" },
               ...STATIC_PREVIEW_BADGES,
             ].map((badge) => (
               <span
                 key={badge.label}
+                className="text-[8px] px-2 py-0.5 rounded font-bold tracking-wider"
                 style={{
                   background: badge.bg,
                   color: badge.fg,
-                  fontSize: 8,
-                  padding: "3px 8px",
-                  borderRadius: 4,
-                  fontWeight: 700,
-                  letterSpacing: "0.06em",
                 }}
               >
                 {badge.label}
@@ -258,51 +195,35 @@ export function LivePreviewPanel({
           </div>
 
           <div
+            className="mx-3 mb-3 rounded-lg border p-3"
             style={{
-              margin: "0 12px 12px",
               background: shell.colors.bg2,
-              border: `1px solid ${shell.colors.border}`,
-              borderRadius: 8,
-              padding: "10px 12px",
+              borderColor: shell.colors.border,
             }}
           >
             <div
-              style={{
-                fontSize: 7,
-                color: shell.colors.fg3,
-                marginBottom: 6,
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-                fontWeight: 700,
-              }}
+              className="text-[7px] uppercase font-bold mb-1.5 tracking-widest"
+              style={{ color: shell.colors.fg3 }}
             >
               Type Specimen
             </div>
             <div
-              style={{
-                fontSize: 15,
-                color: shell.colors.fg,
-                fontWeight: 700,
-                marginBottom: 4,
-                letterSpacing: "-0.02em",
-              }}
+              className="text-[15px] font-bold mb-1 tracking-tight"
+              style={{ color: shell.colors.fg }}
             >
               Display Heading
             </div>
             <div
-              style={{
-                fontSize: 10,
-                color: shell.colors.fg3,
-                lineHeight: 1.6,
-              }}
+              className="text-[10px] leading-relaxed"
+              style={{ color: shell.colors.fg3 }}
             >
               Body text flows naturally with the design token system.
             </div>
           </div>
 
           <div
+            className="h-1"
             style={{
-              height: 3,
               background: `linear-gradient(90deg, ${shell.colors.brandBg}, ${shell.colors.brandBg}88)`,
             }}
           />

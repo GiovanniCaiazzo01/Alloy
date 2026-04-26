@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { X, Check, Copy } from "lucide-react";
 import type { ExportModalProps } from "../types";
 import { generateExport } from "../utils/export";
-import { primaryButtonStyle, secondaryButtonStyle } from "../styles/buttons";
 
 export function ExportModal({
   theme,
@@ -38,106 +37,71 @@ export function ExportModal({
 
   return (
     <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(0,0,0,0.75)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 200,
-        backdropFilter: "blur(6px)",
-        padding: 20,
-      }}
+      className="fixed inset-0 bg-black/75 flex items-center justify-center z-[200] backdrop-blur-md p-5"
       onClick={onClose}
     >
       <div
+        className="rounded-2xl border w-full max-w-[720px] max-h-[85vh] flex flex-col overflow-hidden shadow-2xl"
+        onClick={(event) => event.stopPropagation()}
         style={{
           background: shell.colors.bg,
-          border: `1px solid ${shell.colors.border}`,
-          borderRadius: 14,
-          width: 720,
-          maxWidth: "100%",
-          maxHeight: "85vh",
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-          boxShadow: `0 24px 80px ${shell.isDark ? "#000000aa" : "#00000033"}`,
+          borderColor: shell.colors.border,
         }}
-        onClick={(event) => event.stopPropagation()}
       >
         <div
-          style={{
-            padding: "16px 20px",
-            borderBottom: `1px solid ${shell.colors.border}`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            flexShrink: 0,
-          }}
+          className="px-5 py-4 border-b flex items-center justify-between shrink-0"
+          style={{ borderColor: shell.colors.border }}
         >
           <span
-            style={{
-              fontSize: 13,
-              fontWeight: 700,
-              color: shell.colors.fg,
-              letterSpacing: "0.03em",
-            }}
+            className="text-[13px] font-bold tracking-tight"
+            style={{ color: shell.colors.fg }}
           >
             Export · {theme.name}
           </span>
           <button
             type="button"
             onClick={onClose}
-            style={{
-              background: "transparent",
-              border: "none",
-              cursor: "pointer",
-              color: shell.colors.muted,
-              padding: 4,
-            }}
+            className="p-1 cursor-pointer transition-colors hover:bg-black/5 dark:hover:bg-white/5 rounded"
+            style={{ color: shell.colors.muted }}
             aria-label="Close export modal"
           >
             <X size={16} />
           </button>
         </div>
         <pre
+          className="p-5 overflow-y-auto flex-1 m-0 text-[11px] leading-[1.8] whitespace-pre"
           style={{
-            padding: 20,
-            overflowY: "auto",
-            flex: 1,
-            margin: 0,
-            fontSize: 11,
-            lineHeight: 1.8,
             color: shell.colors.fg2,
             background: shell.colors.bg2,
             fontFamily: shell.monoFont,
-            whiteSpace: "pre",
           }}
         >
           {code}
         </pre>
         <div
-          style={{
-            padding: "12px 20px",
-            borderTop: `1px solid ${shell.colors.border}`,
-            display: "flex",
-            gap: 8,
-            justifyContent: "flex-end",
-            flexShrink: 0,
-          }}
+          className="px-5 py-3 border-t flex gap-2 justify-end shrink-0"
+          style={{ borderColor: shell.colors.border }}
         >
           <button
             type="button"
             onClick={onClose}
-            style={secondaryButtonStyle(shell)}
+            className="px-4 py-1.5 rounded-md text-[11px] font-medium border cursor-pointer transition-all"
+            style={{
+              borderColor: shell.colors.border,
+              background: shell.colors.bg,
+              color: shell.colors.fg,
+            }}
           >
             Close
           </button>
           <button
             type="button"
             onClick={handleCopy}
-            style={primaryButtonStyle(shell)}
+            className="flex items-center gap-1.5 px-4 py-1.5 rounded-md text-[11px] font-bold cursor-pointer transition-all"
+            style={{
+              background: shell.colors.brandBg,
+              color: shell.colors.brandText,
+            }}
           >
             {copied ? <Check size={12} /> : <Copy size={12} />}
             {copied ? "Copied!" : "Copy CSS"}

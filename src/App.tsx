@@ -109,15 +109,11 @@ export default function DesignTokenStudio() {
 
   return (
     <div
-      className="theme-transition"
+      className="theme-transition flex flex-col h-screen overflow-hidden"
       style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100vh",
         background: shell.colors.bg,
         color: shell.colors.fg,
         fontFamily: shell.fontFamily,
-        overflow: "hidden",
       }}
     >
       <style>{buildGlobalTokenCSS(theme)}</style>
@@ -135,38 +131,32 @@ export default function DesignTokenStudio() {
         onPreloadExport={preloadExportModal}
       />
 
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
-        <PresetSidebar
-          activePreset={activePreset}
-          shell={shell}
-          onSelectPreset={applyPreset}
-          onCreateBlankCanvas={handleCreateBlankCanvas}
-        />
-
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            overflow: "hidden",
-            minWidth: 0,
-          }}
-        >
-          <EditorTabs
-            activeTab={activeTab}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="flex-1 flex flex-col md:flex-row overflow-hidden min-h-0">
+          <PresetSidebar
+            activePreset={activePreset}
             shell={shell}
-            onTabChange={handleTabChange}
+            onSelectPreset={applyPreset}
+            onCreateBlankCanvas={handleCreateBlankCanvas}
           />
-          <div style={{ flex: 1, overflowY: "auto", padding: 20 }}>
-            {activeTab === "primitives" ? (
-              <PrimitivesTab theme={theme} dispatch={dispatch} shell={shell} />
-            ) : null}
-            {activeTab === "semantics" ? (
-              <SemanticsTab theme={theme} dispatch={dispatch} shell={shell} />
-            ) : null}
-            {activeTab === "typography" ? (
-              <TypographyTab theme={theme} dispatch={dispatch} shell={shell} />
-            ) : null}
+
+          <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+            <EditorTabs
+              activeTab={activeTab}
+              shell={shell}
+              onTabChange={handleTabChange}
+            />
+            <div className="flex-1 overflow-y-auto p-2 sm:p-3 md:p-5">
+              {activeTab === "primitives" ? (
+                <PrimitivesTab theme={theme} dispatch={dispatch} shell={shell} />
+              ) : null}
+              {activeTab === "semantics" ? (
+                <SemanticsTab theme={theme} dispatch={dispatch} shell={shell} />
+              ) : null}
+              {activeTab === "typography" ? (
+                <TypographyTab theme={theme} dispatch={dispatch} shell={shell} />
+              ) : null}
+            </div>
           </div>
         </div>
 

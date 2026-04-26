@@ -13,70 +13,28 @@ export function ColorInput({
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 10,
-        background: "var(--ds-color-background-neutral-secondary, #f8f8f8)",
-        border: "1px solid var(--ds-color-border-neutral-primary, #e4e4e7)",
-        borderRadius: 8,
-        padding: "8px 10px",
-      }}
-    >
+    <div className="flex items-center gap-2.5 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-2 overflow-hidden shadow-sm">
       <div
-        style={{
-          width: 28,
-          height: 28,
-          borderRadius: 6,
-          background: value,
-          flexShrink: 0,
-          position: "relative",
-          border: "1px solid rgba(0,0,0,0.08)",
-        }}
+        className="w-7 h-7 rounded-md relative flex-shrink-0 border border-black/10"
+        style={{ background: value }}
       >
         <input
           aria-label={label ? `${label} color picker` : "Color picker"}
           type="color"
           value={value}
           onChange={(event) => onChange(event.target.value)}
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0,
-            cursor: "pointer",
-            width: "100%",
-            height: "100%",
-            border: "none",
-            padding: 0,
-          }}
+          className="absolute inset-0 opacity-0 cursor-pointer w-full h-full p-0 border-none"
         />
       </div>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div
-          style={{
-            fontSize: 9,
-            color: "#888",
-            marginBottom: 2,
-            letterSpacing: "0.05em",
-          }}
-        >
+      <div className="flex-1 min-w-0">
+        <div className="text-[9px] text-neutral-400 mb-0.5 tracking-wider truncate uppercase font-semibold">
           {label}
         </div>
         <input
           aria-label={label ? `${label} hex value` : "Hex value"}
           value={value}
           onChange={(event) => handleTextChange(event.target.value)}
-          style={{
-            background: "transparent",
-            border: "none",
-            outline: "none",
-            color: "var(--ds-color-text-neutral-secondary, #333)",
-            fontFamily: "var(--ds-font-sans)",
-            fontSize: 11,
-            width: "100%",
-            userSelect: "text",
-          }}
+          className="bg-transparent border-none outline-none text-neutral-700 dark:text-neutral-200 font-sans text-[11px] w-full select-text uppercase"
           maxLength={7}
           spellCheck={false}
         />

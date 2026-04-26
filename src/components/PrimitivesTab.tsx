@@ -4,7 +4,6 @@ import type { ThemeEditorProps } from "../types";
 import { PRIMITIVE_STEPS } from "../types";
 import { SectionTitle } from "./ui/SectionTitle";
 import { ColorInput } from "./ui/ColorInput";
-import { inputStyle, primaryButtonStyle } from "../styles/buttons";
 
 export function PrimitivesTab({
   theme,
@@ -24,25 +23,12 @@ export function PrimitivesTab({
       {Object.entries(theme.primitives).map(([scaleName, steps]) => (
         <div
           key={scaleName}
-          className="primitive-scale-group"
-          style={{ marginBottom: 22 }}
+          className="mb-[22px]"
         >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              marginBottom: 8,
-            }}
-          >
+          <div className="flex items-center gap-2 mb-2">
             <span
-              style={{
-                fontSize: 11,
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.12em",
-                color: shell.colors.fg,
-              }}
+              className="text-[11px] font-bold uppercase tracking-[0.12em]"
+              style={{ color: shell.colors.fg }}
             >
               {scaleName}
             </span>
@@ -51,13 +37,8 @@ export function PrimitivesTab({
               onClick={() =>
                 dispatch({ type: "remove-scale", scale: scaleName })
               }
-              style={{
-                background: "transparent",
-                border: "none",
-                cursor: "pointer",
-                color: shell.colors.muted,
-                padding: 2,
-              }}
+              className="bg-transparent border-none cursor-pointer p-0.5"
+              style={{ color: shell.colors.muted }}
               title="Remove scale"
               aria-label={`Remove ${scaleName} scale`}
             >
@@ -65,21 +46,13 @@ export function PrimitivesTab({
             </button>
           </div>
           <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(9, 1fr)",
-              gap: 6,
-            }}
+            className="grid grid-cols-[repeat(9,minmax(56px,1fr))] gap-1.5 overflow-x-auto no-scrollbar pb-2"
           >
             {PRIMITIVE_STEPS.map((step) => (
               <div key={step}>
                 <div
-                  style={{
-                    fontSize: 8,
-                    color: shell.colors.muted,
-                    textAlign: "center",
-                    marginBottom: 4,
-                  }}
+                  className="text-[8px] text-center mb-1 uppercase font-bold opacity-50"
+                  style={{ color: shell.colors.muted }}
                 >
                   {step}
                 </div>
@@ -101,21 +74,30 @@ export function PrimitivesTab({
         </div>
       ))}
 
-      <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-        <input
-          placeholder="New scale name (e.g. teal)"
-          value={newScale}
-          onChange={(event) => setNewScale(event.target.value.toLowerCase())}
-          style={{
-            ...inputStyle(shell),
-            flex: 1,
-            fontFamily: shell.fontFamily,
-          }}
-        />
+      <div className="flex gap-2 mt-2 items-end">
+        <div className="flex-1">
+          <div className="text-[9px] uppercase font-bold tracking-wider mb-1 px-1 opacity-50">New Scale</div>
+          <input
+            placeholder="e.g. teal"
+            value={newScale}
+            onChange={(event) => setNewScale(event.target.value.toLowerCase())}
+            className="w-full px-3 py-1.5 rounded-md border outline-none text-[11px]"
+            style={{
+              background: shell.colors.bg,
+              borderColor: shell.colors.border2,
+              color: shell.colors.fg,
+              fontFamily: shell.fontFamily,
+            }}
+          />
+        </div>
         <button
           type="button"
           onClick={handleAddScale}
-          style={primaryButtonStyle(shell)}
+          className="flex items-center gap-1.5 px-4 py-1.5 rounded-md text-[11px] font-bold cursor-pointer transition-all h-[31px]"
+          style={{
+            background: shell.colors.brandBg,
+            color: shell.colors.brandText,
+          }}
         >
           <Plus size={12} /> Add Scale
         </button>

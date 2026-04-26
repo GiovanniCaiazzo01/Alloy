@@ -1,6 +1,5 @@
 import type { ThemeEditorProps } from "../types";
 import { SectionTitle } from "./ui/SectionTitle";
-import { inputStyle } from "../styles/buttons";
 
 export function TypographyTab({
   theme,
@@ -10,7 +9,7 @@ export function TypographyTab({
   return (
     <div>
       <SectionTitle shell={shell}>Font Family</SectionTitle>
-      <div style={{ marginBottom: 20 }}>
+      <div className="mb-5 flex flex-col gap-2">
         <input
           value={theme.fontFamily}
           onChange={(event) =>
@@ -19,21 +18,20 @@ export function TypographyTab({
               fontFamily: event.target.value,
             })
           }
+          className="w-full px-3 py-1.5 rounded-md border outline-none text-[11px]"
           style={{
-            ...inputStyle(shell),
-            width: "100%",
+            background: shell.colors.bg,
+            borderColor: shell.colors.border,
+            color: shell.colors.fg,
             fontFamily: shell.fontFamily,
           }}
         />
         <div
+          className="p-3 rounded-md border text-base"
           style={{
-            marginTop: 8,
-            padding: "10px 12px",
             background: shell.colors.bg2,
-            border: `1px solid ${shell.colors.border}`,
-            borderRadius: 6,
+            borderColor: shell.colors.border,
             fontFamily: `'${theme.fontFamily}', sans-serif`,
-            fontSize: 16,
             color: shell.colors.fg,
           }}
         >
@@ -42,107 +40,114 @@ export function TypographyTab({
       </div>
 
       <SectionTitle shell={shell}>Type Scale</SectionTitle>
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      <div className="flex flex-col gap-2.5">
         {Object.entries(theme.typography).map(([tokenName, token]) => (
           <div
             key={tokenName}
-            className="typography-token-card"
+            className="p-3 rounded-lg border"
             style={{
               background: shell.colors.bg2,
-              border: `1px solid ${shell.colors.border}`,
-              borderRadius: 8,
-              padding: 12,
+              borderColor: shell.colors.border,
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                marginBottom: 10,
-              }}
-            >
+            <div className="flex items-center gap-2.5 mb-2.5">
               <span
-                style={{
-                  fontSize: 10,
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.1em",
-                  color: shell.colors.fg,
-                  width: 100,
-                }}
+                className="text-[10px] font-bold uppercase tracking-wider w-[100px] truncate"
+                style={{ color: shell.colors.fg }}
               >
                 {tokenName}
               </span>
-              <span style={{ fontSize: 10, color: shell.colors.muted }}>
+              <span className="text-[10px] opacity-50 font-mono">
                 {token.size} / {token.lineHeight} / {token.weight}
               </span>
             </div>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr 80px",
-                gap: 8,
-              }}
-            >
-              <input
-                placeholder="Size"
-                value={token.size}
-                onChange={(event) =>
-                  dispatch({
-                    type: "update-typography",
-                    key: tokenName,
-                    changes: { size: event.target.value },
-                  })
-                }
-                style={inputStyle(shell)}
-              />
-              <input
-                placeholder="Line-height"
-                value={token.lineHeight}
-                onChange={(event) =>
-                  dispatch({
-                    type: "update-typography",
-                    key: tokenName,
-                    changes: { lineHeight: event.target.value },
-                  })
-                }
-                style={inputStyle(shell)}
-              />
-              <input
-                placeholder="Letter-spacing"
-                value={token.letterSpacing}
-                onChange={(event) =>
-                  dispatch({
-                    type: "update-typography",
-                    key: tokenName,
-                    changes: { letterSpacing: event.target.value },
-                  })
-                }
-                style={inputStyle(shell)}
-              />
-              <input
-                type="number"
-                placeholder="Weight"
-                value={token.weight}
-                onChange={(event) => {
-                  const nextWeight = Number(event.target.value);
-                  dispatch({
-                    type: "update-typography",
-                    key: tokenName,
-                    changes: {
-                      weight: Number.isNaN(nextWeight)
-                        ? token.weight
-                        : nextWeight,
-                    },
-                  });
-                }}
-                style={inputStyle(shell)}
-              />
+            <div className="grid grid-cols-4 gap-2">
+              <div className="flex flex-col gap-1">
+                <div className="text-[8px] uppercase font-bold opacity-40 px-1">Size</div>
+                <input
+                  value={token.size}
+                  onChange={(event) =>
+                    dispatch({
+                      type: "update-typography",
+                      key: tokenName,
+                      changes: { size: event.target.value },
+                    })
+                  }
+                  className="w-full px-2 py-1 rounded border outline-none text-[10px]"
+                  style={{
+                    background: shell.colors.bg,
+                    borderColor: shell.colors.border,
+                    color: shell.colors.fg,
+                  }}
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <div className="text-[8px] uppercase font-bold opacity-40 px-1">Line</div>
+                <input
+                  value={token.lineHeight}
+                  onChange={(event) =>
+                    dispatch({
+                      type: "update-typography",
+                      key: tokenName,
+                      changes: { lineHeight: event.target.value },
+                    })
+                  }
+                  className="w-full px-2 py-1 rounded border outline-none text-[10px]"
+                  style={{
+                    background: shell.colors.bg,
+                    borderColor: shell.colors.border,
+                    color: shell.colors.fg,
+                  }}
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <div className="text-[8px] uppercase font-bold opacity-40 px-1">Track</div>
+                <input
+                  value={token.letterSpacing}
+                  onChange={(event) =>
+                    dispatch({
+                      type: "update-typography",
+                      key: tokenName,
+                      changes: { letterSpacing: event.target.value },
+                    })
+                  }
+                  className="w-full px-2 py-1 rounded border outline-none text-[10px]"
+                  style={{
+                    background: shell.colors.bg,
+                    borderColor: shell.colors.border,
+                    color: shell.colors.fg,
+                  }}
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <div className="text-[8px] uppercase font-bold opacity-40 px-1">Weight</div>
+                <input
+                  type="number"
+                  value={token.weight}
+                  onChange={(event) => {
+                    const nextWeight = Number(event.target.value);
+                    dispatch({
+                      type: "update-typography",
+                      key: tokenName,
+                      changes: {
+                        weight: Number.isNaN(nextWeight)
+                          ? token.weight
+                          : nextWeight,
+                      },
+                    });
+                  }}
+                  className="w-full px-2 py-1 rounded border outline-none text-[10px]"
+                  style={{
+                    background: shell.colors.bg,
+                    borderColor: shell.colors.border,
+                    color: shell.colors.fg,
+                  }}
+                />
+              </div>
             </div>
             <div
+              className="mt-3 truncate"
               style={{
-                marginTop: 10,
                 fontFamily: `'${theme.fontFamily}', sans-serif`,
                 fontSize: token.size,
                 lineHeight: token.lineHeight,

@@ -8,11 +8,9 @@ export function EditorTabs({
 }: EditorTabsProps) {
   return (
     <div
+      className="flex px-4 flex-shrink-0 border-b overflow-x-auto no-scrollbar"
       style={{
-        display: "flex",
-        borderBottom: `1px solid ${shell.colors.border}`,
-        padding: "0 16px",
-        flexShrink: 0,
+        borderColor: shell.colors.border,
         background: shell.colors.bg2,
       }}
     >
@@ -23,26 +21,14 @@ export function EditorTabs({
           <button
             key={id}
             type="button"
+            onClick={() => onTabChange(id)}
+            className="flex items-center gap-1.5 px-4 py-3 text-[10px] tracking-[0.1em] cursor-pointer border-none bg-none border-b-2 uppercase transition-all whitespace-nowrap"
             style={{
-              padding: "12px 16px",
-              fontSize: 10,
-              letterSpacing: "0.1em",
               color: isActive ? shell.colors.fg : shell.colors.muted,
-              cursor: "pointer",
-              border: "none",
-              background: "none",
-              borderBottom: `2px solid ${
-                isActive ? shell.colors.brandBg : "transparent"
-              }`,
-              transition: "all .2s",
+              borderBottomColor: isActive ? shell.colors.brandBg : "transparent",
               fontFamily: shell.fontFamily,
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              textTransform: "uppercase",
               fontWeight: isActive ? 700 : 500,
             }}
-            onClick={() => onTabChange(id)}
           >
             <Icon size={12} /> {label}
           </button>

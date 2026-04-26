@@ -76,25 +76,25 @@ export type ThemeAction =
   | { type: "set-theme-name"; name: string }
   | { type: "set-font-family"; fontFamily: string }
   | {
-      type: "update-primitive";
-      scale: string;
-      step: PrimitiveStep;
-      value: string;
-    }
+    type: "update-primitive";
+    scale: string;
+    step: PrimitiveStep;
+    value: string;
+  }
   | { type: "add-scale"; scale: string }
   | { type: "remove-scale"; scale: string }
   | { type: "add-semantic"; token: SemanticToken }
   | {
-      type: "update-semantic";
-      index: number;
-      changes: Partial<Pick<SemanticToken, "name" | "value">>;
-    }
+    type: "update-semantic";
+    index: number;
+    changes: Partial<Pick<SemanticToken, "name" | "value">>;
+  }
   | { type: "remove-semantic"; index: number }
   | {
-      type: "update-typography";
-      key: string;
-      changes: Partial<TypographyToken>;
-    };
+    type: "update-typography";
+    key: string;
+    changes: Partial<TypographyToken>;
+  };
 
 export type ThemeEditorProps = {
   theme: DesignTheme;
