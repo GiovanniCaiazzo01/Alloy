@@ -12,7 +12,11 @@ export function useShellTheme(theme: ShellThemeSource): ShellTheme {
 
     const getColor = (name: string, fallback: string): string => {
       const tokenValue = semanticMap.get(name);
-      return tokenValue ? resolveToken(tokenValue, theme.primitives) : fallback;
+      if (!tokenValue) {
+        return fallback;
+      }
+
+      return resolveToken(tokenValue, theme.primitives) ?? fallback;
     };
 
     const bg = getColor("background-neutral-primary", "#ffffff");

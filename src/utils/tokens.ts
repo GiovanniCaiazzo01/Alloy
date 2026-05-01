@@ -1,20 +1,67 @@
-import type { DesignTheme, PrimitiveStep, PrimitiveCollection } from "../types";
+import type { DesignTheme, PrimitiveCollection, PrimitiveScale } from "../types";
 
-export function resolveToken(value: string, primitives: PrimitiveCollection): string {
+export function getSortedPrimitiveSteps(scale: PrimitiveScale): number[] {
+  return Object.keys(scale)
+    .map((step) => Number(step))
+    .filter((step) => Number.isInteger(step))
+    .sort((left, right) => left - right);
+}
+
+export function parsePrimitiveReference(
+  value: string
+): { scale: string; step: number } | null {
+  const normalizedValue = value.trim();
+  const unwrappedValue =
+    normalizedValue.startsWith("{") && normalizedValue.endsWith("}")
+      ? normalizedValue.slice(1, -1).trim()
+      : normalizedValue;
+
+  if (!unwrappedValue) {
+    return null;
+  }
+
+  const segments = unwrappedValue
+    .split(".")
+    .map((segment) => segment.trim())
+    .filter(Boolean);
+
+  if (segments.length < 2) {
+    return null;
+  }
+
+  const step = Number(segments.at(-1));
+  if (!Number.isInteger(step)) {
+    return null;
+  }
+
+  return {
+    scale: segments.slice(0, -1).join("-"),
+    step,
+  };
+}
+
+export function isPrimitiveReference(value: string): boolean {
+  return parsePrimitiveReference(value) !== null;
+}
+
+export function resolveToken(
+  value: string,
+  primitives: PrimitiveCollection
+): string | null {
   if (!value) {
-    return "#000000";
+    return null;
   }
 
   if (value.startsWith("#")) {
     return value;
   }
 
-  const [scale, step] = value.split(".");
-  if (!scale || !step) {
-    return "#000000";
+  const reference = parsePrimitiveReference(value);
+  if (!reference) {
+    return value;
   }
 
-  return primitives[scale]?.[Number(step) as PrimitiveStep] ?? "#000000";
+  return primitives[reference.scale]?.[reference.step] ?? null;
 }
 
 export function normalizeHexForLuminance(hexColor: string): string {
@@ -35,6 +82,10 @@ export function normalizeHexForLuminance(hexColor: string): string {
 }
 
 export function isDarkColor(hexColor: string): boolean {
+  if (!hexColor.startsWith("#")) {
+    return false;
+  }
+
   const normalized = normalizeHexForLuminance(hexColor);
   const r = Number.parseInt(normalized.slice(0, 2), 16);
   const g = Number.parseInt(normalized.slice(2, 4), 16);

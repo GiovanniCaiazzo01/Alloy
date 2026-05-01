@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import type { ThemeEditorProps } from "../types";
-import { PRIMITIVE_STEPS } from "../types";
+import { getSortedPrimitiveSteps } from "../utils/tokens";
 import { SectionTitle } from "./ui/SectionTitle";
 import { ColorInput } from "./ui/ColorInput";
 
@@ -20,59 +20,66 @@ export function PrimitivesTab({
   return (
     <div>
       <SectionTitle shell={shell}>Color Primitives</SectionTitle>
-      {Object.entries(theme.primitives).map(([scaleName, steps]) => (
-        <div
-          key={scaleName}
-          className="mb-[22px]"
-        >
-          <div className="flex items-center gap-2 mb-2">
-            <span
-              className="text-[11px] font-bold uppercase tracking-[0.12em]"
-              style={{ color: shell.colors.fg }}
-            >
-              {scaleName}
-            </span>
-            <button
-              type="button"
-              onClick={() =>
-                dispatch({ type: "remove-scale", scale: scaleName })
-              }
-              className="bg-transparent border-none cursor-pointer p-0.5"
-              style={{ color: shell.colors.muted }}
-              title="Remove scale"
-              aria-label={`Remove ${scaleName} scale`}
-            >
-              <Trash2 size={12} />
-            </button>
-          </div>
+      {Object.entries(theme.primitives).map(([scaleName, steps]) => {
+        const scaleSteps = getSortedPrimitiveSteps(steps);
+
+        return (
           <div
-            className="grid grid-cols-[repeat(9,minmax(56px,1fr))] gap-1.5 overflow-x-auto no-scrollbar pb-2"
+            key={scaleName}
+            className="mb-[22px]"
           >
-            {PRIMITIVE_STEPS.map((step) => (
-              <div key={step}>
-                <div
-                  className="text-[8px] text-center mb-1 uppercase font-bold opacity-50"
-                  style={{ color: shell.colors.muted }}
-                >
-                  {step}
+            <div className="flex items-center gap-2 mb-2">
+              <span
+                className="text-[11px] font-bold uppercase tracking-[0.12em]"
+                style={{ color: shell.colors.fg }}
+              >
+                {scaleName}
+              </span>
+              <button
+                type="button"
+                onClick={() =>
+                  dispatch({ type: "remove-scale", scale: scaleName })
+                }
+                className="bg-transparent border-none cursor-pointer p-0.5"
+                style={{ color: shell.colors.muted }}
+                title="Remove scale"
+                aria-label={`Remove ${scaleName} scale`}
+              >
+                <Trash2 size={12} />
+              </button>
+            </div>
+            <div
+              className="grid gap-1.5 overflow-x-auto no-scrollbar pb-2"
+              style={{
+                gridTemplateColumns: `repeat(${Math.max(scaleSteps.length, 1)}, minmax(56px, 1fr))`,
+              }}
+            >
+              {scaleSteps.map((step) => (
+                <div key={step}>
+                  <div
+                    className="text-[8px] text-center mb-1 uppercase font-bold opacity-50"
+                    style={{ color: shell.colors.muted }}
+                  >
+                    {step}
+                  </div>
+                  <ColorInput
+                    label={`${scaleName} ${step}`}
+                    value={steps[step]}
+                    onChange={(value) =>
+                      dispatch({
+                        type: "update-primitive",
+                        scale: scaleName,
+                        step,
+                        value,
+                      })
+                    }
+                  />
                 </div>
-                <ColorInput
-                  label={`${scaleName} ${step}`}
-                  value={steps[step]}
-                  onChange={(value) =>
-                    dispatch({
-                      type: "update-primitive",
-                      scale: scaleName,
-                      step,
-                      value,
-                    })
-                  }
-                />
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
 
       <div className="flex gap-2 mt-2 items-end">
         <div className="flex-1">

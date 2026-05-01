@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Hash, Trash2 } from "lucide-react";
 import type { ThemeEditorProps } from "../types";
-import { PRIMITIVE_STEPS } from "../types";
 import { SectionTitle } from "./ui/SectionTitle";
-import { resolveToken } from "../utils/tokens";
+import { getSortedPrimitiveSteps, resolveToken } from "../utils/tokens";
 
 export function SemanticsTab({
   theme,
@@ -14,8 +13,10 @@ export function SemanticsTab({
   const [newValue, setNewValue] = useState("");
 
   const primitiveOptions = Object.entries(theme.primitives).flatMap(([scaleName]) =>
-        PRIMITIVE_STEPS.map((step) => `${scaleName}.${step}`)
-      )
+    getSortedPrimitiveSteps(theme.primitives[scaleName]).map(
+      (step) => `${scaleName}.${step}`
+    )
+  );
 
   const handleAddSemantic = () => {
     const normalizedName = newName.trim();
@@ -92,7 +93,8 @@ export function SemanticsTab({
             <div
               className="w-[18px] h-[18px] rounded-md border"
               style={{
-                background: resolveToken(token.value, theme.primitives),
+                background:
+                  resolveToken(token.value, theme.primitives) ?? shell.colors.bg,
                 borderColor: shell.colors.border,
               }}
             />

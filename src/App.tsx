@@ -11,6 +11,7 @@ import { DEFAULT_PRESET, BLANK_CANVAS_THEME, PRESETS } from "./constants";
 import { themeReducer } from "./utils/themeReducer";
 import { cloneTheme } from "./utils/tokens";
 import { buildGlobalTokenCSS } from "./utils/export";
+import { importThemeFromJson } from "./utils/import";
 import { useDynamicGoogleFont, useShellTheme } from "./hooks";
 
 import {
@@ -30,10 +31,20 @@ const loadExportModal = () =>
     default: module.ExportModal,
   }));
 
+const loadImportModal = () =>
+  import("./components/ImportModal").then((module) => ({
+    default: module.ImportModal,
+  }));
+
 const ExportModal = lazy(loadExportModal);
+const ImportModal = lazy(loadImportModal);
 
 function preloadExportModal(): void {
   void loadExportModal();
+}
+
+function preloadImportModal(): void {
+  void loadImportModal();
 }
 
 export default function DesignTokenStudio() {
@@ -44,6 +55,7 @@ export default function DesignTokenStudio() {
   );
   const [activePreset, setActivePreset] = useState<number>(0);
   const [activeTab, setActiveTab] = useState<TabId>("primitives");
+  const [showImport, setShowImport] = useState(false);
   const [showExport, setShowExport] = useState(false);
   const [editingName, setEditingName] = useState(false);
 
@@ -89,8 +101,27 @@ export default function DesignTokenStudio() {
     setShowExport(true);
   };
 
+  const openImportModal = () => {
+    preloadImportModal();
+    setShowImport(true);
+  };
+
+  const closeImportModal = () => {
+    setShowImport(false);
+  };
+
   const closeExportModal = () => {
     setShowExport(false);
+  };
+
+  const handleImportTokens = (payload: string) => {
+    const importedTheme = importThemeFromJson(payload, theme);
+
+    startTransition(() => {
+      setActivePreset(-1);
+      dispatch({ type: "apply-theme", theme: importedTheme.theme });
+      setShowImport(false);
+    });
   };
 
   const startEditingName = () => {
@@ -127,7 +158,9 @@ export default function DesignTokenStudio() {
         onStopEditingName={stopEditingName}
         onThemeNameChange={handleThemeNameChange}
         onReset={handleReset}
+        onOpenImport={openImportModal}
         onOpenExport={openExportModal}
+        onPreloadImport={preloadImportModal}
         onPreloadExport={preloadExportModal}
       />
 
@@ -165,6 +198,16 @@ export default function DesignTokenStudio() {
           themeName={deferredTheme.name}
         />
       </div>
+
+      {showImport ? (
+        <Suspense fallback={null}>
+          <ImportModal
+            shell={shell}
+            onClose={closeImportModal}
+            onImport={handleImportTokens}
+          />
+        </Suspense>
+      ) : null}
 
       {showExport ? (
         <Suspense fallback={null}>

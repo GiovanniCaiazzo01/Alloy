@@ -1,5 +1,16 @@
 import type { DesignTheme } from "../types";
-import { PRIMITIVE_STEPS } from "../types";
+import {
+  getSortedPrimitiveSteps,
+  parsePrimitiveReference,
+} from "./tokens";
+
+function toCssTokenValue(value: string, prefix: string): string {
+  const reference = parsePrimitiveReference(value);
+
+  return reference
+    ? `var(${prefix}${reference.scale}-${reference.step})`
+    : value;
+}
 
 export function generateExport(theme: DesignTheme): string {
   const lines: string[] = [];
@@ -17,18 +28,16 @@ export function generateExport(theme: DesignTheme): string {
   lines.push("");
 
   for (const [scaleName, steps] of Object.entries(theme.primitives)) {
-    for (const step of PRIMITIVE_STEPS) {
+    for (const step of getSortedPrimitiveSteps(steps)) {
       lines.push(`  --color-${scaleName}-${step}: ${steps[step]};`);
     }
     lines.push("");
   }
 
   for (const semantic of theme.semantics) {
-    const value = semantic.value.startsWith("#")
-      ? semantic.value
-      : `var(--color-${semantic.value.replace(".", "-")})`;
-
-    lines.push(`  --color-${semantic.name}: ${value};`);
+    lines.push(
+      `  --color-${semantic.name}: ${toCssTokenValue(semantic.value, "--color-")};`
+    );
   }
 
   lines.push("");
@@ -72,17 +81,15 @@ export function buildGlobalTokenCSS(theme: DesignTheme): string {
   lines.push(`  --ds-font-sans: "${theme.fontFamily}", sans-serif;`);
 
   for (const [scaleName, steps] of Object.entries(theme.primitives)) {
-    for (const step of PRIMITIVE_STEPS) {
+    for (const step of getSortedPrimitiveSteps(steps)) {
       lines.push(`  --ds-color-${scaleName}-${step}: ${steps[step]};`);
     }
   }
 
   for (const semantic of theme.semantics) {
-    const value = semantic.value.startsWith("#")
-      ? semantic.value
-      : `var(--ds-color-${semantic.value.replace(".", "-")})`;
-
-    lines.push(`  --ds-color-${semantic.name}: ${value};`);
+    lines.push(
+      `  --ds-color-${semantic.name}: ${toCssTokenValue(semantic.value, "--ds-color-")};`
+    );
   }
 
   for (const [tokenName, token] of Object.entries(theme.typography)) {

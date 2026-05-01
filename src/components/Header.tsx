@@ -1,4 +1,4 @@
-import { RotateCcw, Code, Copy } from "lucide-react";
+import { RotateCcw, Code, Copy, Upload } from "lucide-react";
 import type { HeaderProps } from "../types";
 
 export function AppHeader({
@@ -10,7 +10,9 @@ export function AppHeader({
   onStopEditingName,
   onThemeNameChange,
   onReset,
+  onOpenImport,
   onOpenExport,
+  onPreloadImport,
   onPreloadExport,
 }: HeaderProps) {
   return (
@@ -82,6 +84,20 @@ export function AppHeader({
           disabled={activePreset < 0}
         >
           <RotateCcw size={11} /> <span className="hidden md:inline">Reset</span>
+        </button>
+        <button
+          type="button"
+          onClick={onOpenImport}
+          onMouseEnter={onPreloadImport}
+          onFocus={onPreloadImport}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[11px] font-medium transition-all cursor-pointer border"
+          style={{
+            borderColor: shell.colors.border,
+            background: shell.colors.bg,
+            color: shell.colors.fg,
+          }}
+        >
+          <Upload size={11} /> <span className="hidden sm:inline">Import</span>
         </button>
         <button
           type="button"

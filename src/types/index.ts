@@ -2,7 +2,7 @@ import type { LucideIcon } from "lucide-react";
 
 export const PRIMITIVE_STEPS = [100, 200, 300, 400, 500, 600, 700, 800, 900] as const;
 
-export type PrimitiveStep = (typeof PRIMITIVE_STEPS)[number];
+export type PrimitiveStep = number;
 export type PrimitiveScale = Record<PrimitiveStep, string>;
 export type PrimitiveCollection = Record<string, PrimitiveScale>;
 
@@ -119,6 +119,12 @@ export type ExportModalProps = {
   onClose: () => void;
 };
 
+export type ImportModalProps = {
+  shell: ShellTheme;
+  onClose: () => void;
+  onImport: (payload: string) => void;
+};
+
 export type HeaderProps = {
   activePreset: number;
   shell: ShellTheme;
@@ -128,7 +134,9 @@ export type HeaderProps = {
   onStopEditingName: () => void;
   onThemeNameChange: (name: string) => void;
   onReset: () => void;
+  onOpenImport: () => void;
   onOpenExport: () => void;
+  onPreloadImport: () => void;
   onPreloadExport: () => void;
 };
 
