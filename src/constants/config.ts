@@ -16,6 +16,15 @@ export const PREVIEW_CARDS = [
   { title: "Semantics", desc: "Meaningful tokens", icon: "◉" },
 ] as const;
 
+export function createDefaultTypographyToken() {
+  return {
+    size: "1rem",
+    lineHeight: "150%",
+    letterSpacing: "0",
+    weight: 400,
+  };
+}
+
 export function createDefaultScale(): Record<number, string> {
   return {
     100: "#f8f8f8",

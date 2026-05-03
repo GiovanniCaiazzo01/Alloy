@@ -11,6 +11,7 @@ export function ImportModal({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [payload, setPayload] = useState("");
   const [error, setError] = useState("");
+  const [sourceLabel, setSourceLabel] = useState("Pasted JSON");
 
   const handleImport = () => {
     const trimmedPayload = payload.trim();
@@ -20,7 +21,7 @@ export function ImportModal({
     }
 
     try {
-      onImport(trimmedPayload);
+      onImport(trimmedPayload, sourceLabel);
     } catch (importError) {
       setError(
         importError instanceof Error
@@ -39,6 +40,7 @@ export function ImportModal({
     try {
       const fileContents = await file.text();
       setPayload(fileContents);
+      setSourceLabel(file.name);
       setError("");
     } catch {
       setError("The selected file could not be read.");
@@ -110,6 +112,18 @@ export function ImportModal({
             >
               <FileUp size={12} /> Load JSON File
             </button>
+            <div
+              className="flex items-center px-2.5 py-1.5 rounded-md text-[10px] border max-w-full truncate"
+              style={{
+                borderColor: shell.colors.border,
+                background: shell.colors.bg2,
+                color: shell.colors.fg3,
+                fontFamily: shell.monoFont,
+              }}
+              title={sourceLabel}
+            >
+              {sourceLabel}
+            </div>
           </div>
 
           <textarea

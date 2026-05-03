@@ -21,10 +21,9 @@ import {
   PrimitivesTab,
   SemanticsTab,
   TypographyTab,
-  LivePreviewPanel,
 } from "./components";
 
-import type { TabId } from "./types";
+import type { ImportedThemeState, TabId } from "./types";
 
 const loadExportModal = () =>
   import("./components/ExportModal").then((module) => ({
@@ -36,8 +35,14 @@ const loadImportModal = () =>
     default: module.ImportModal,
   }));
 
+const loadLivePreviewPanel = () =>
+  import("./components/LivePreview").then((module) => ({
+    default: module.LivePreviewPanel,
+  }));
+
 const ExportModal = lazy(loadExportModal);
 const ImportModal = lazy(loadImportModal);
+const LivePreviewPanel = lazy(loadLivePreviewPanel);
 
 function preloadExportModal(): void {
   void loadExportModal();
@@ -45,6 +50,10 @@ function preloadExportModal(): void {
 
 function preloadImportModal(): void {
   void loadImportModal();
+}
+
+function preloadLivePreviewPanel(): void {
+  void loadLivePreviewPanel();
 }
 
 export default function DesignTokenStudio() {
@@ -58,6 +67,10 @@ export default function DesignTokenStudio() {
   const [showImport, setShowImport] = useState(false);
   const [showExport, setShowExport] = useState(false);
   const [editingName, setEditingName] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(true);
+  const [importedThemeState, setImportedThemeState] = useState<ImportedThemeState | null>(
+    null
+  );
 
   const shell = useShellTheme(theme);
   const deferredTheme = useDeferredValue(theme);
@@ -73,6 +86,7 @@ export default function DesignTokenStudio() {
 
     startTransition(() => {
       setActivePreset(index);
+      setImportedThemeState(null);
       dispatch({ type: "apply-theme", theme: preset });
     });
   };
@@ -80,6 +94,7 @@ export default function DesignTokenStudio() {
   const handleCreateBlankCanvas = () => {
     startTransition(() => {
       setActivePreset(-1);
+      setImportedThemeState(null);
       dispatch({ type: "apply-theme", theme: BLANK_CANVAS_THEME });
     });
   };
@@ -114,11 +129,15 @@ export default function DesignTokenStudio() {
     setShowExport(false);
   };
 
-  const handleImportTokens = (payload: string) => {
+  const handleImportTokens = (payload: string, sourceLabel: string) => {
     const importedTheme = importThemeFromJson(payload, theme);
 
     startTransition(() => {
       setActivePreset(-1);
+      setImportedThemeState({
+        sourceLabel,
+        summary: importedTheme.summary,
+      });
       dispatch({ type: "apply-theme", theme: importedTheme.theme });
       setShowImport(false);
     });
@@ -138,6 +157,16 @@ export default function DesignTokenStudio() {
     });
   };
 
+  const togglePreview = () => {
+    if (!previewOpen) {
+      preloadLivePreviewPanel();
+    }
+
+    startTransition(() => {
+      setPreviewOpen((current) => !current);
+    });
+  };
+
   return (
     <div
       className="theme-transition flex flex-col h-screen overflow-hidden"
@@ -154,26 +183,57 @@ export default function DesignTokenStudio() {
         shell={shell}
         themeName={theme.name}
         editingName={editingName}
+        previewOpen={previewOpen}
         onStartEditingName={startEditingName}
         onStopEditingName={stopEditingName}
         onThemeNameChange={handleThemeNameChange}
         onReset={handleReset}
         onOpenImport={openImportModal}
         onOpenExport={openExportModal}
+        onTogglePreview={togglePreview}
         onPreloadImport={preloadImportModal}
         onPreloadExport={preloadExportModal}
       />
 
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="flex-1 flex flex-col md:flex-row overflow-hidden min-h-0">
+      <div className="flex-1 overflow-hidden">
+        <div className="flex h-full min-h-0 flex-col md:flex-row overflow-hidden">
           <PresetSidebar
             activePreset={activePreset}
             shell={shell}
+            themeName={theme.name}
+            importedThemeState={importedThemeState}
             onSelectPreset={applyPreset}
             onCreateBlankCanvas={handleCreateBlankCanvas}
           />
 
-          <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+          <div className="flex-1 min-w-0 min-h-0 flex flex-col overflow-hidden">
+            <div
+              className="px-4 py-3 border-b flex items-center justify-between gap-3"
+              style={{
+                borderColor: shell.colors.border,
+                background: shell.colors.bg,
+              }}
+            >
+              <div>
+                <div
+                  className="text-[8px] uppercase font-bold tracking-[0.22em]"
+                  style={{ color: shell.colors.brandBg }}
+                >
+                  Focused Editor
+                </div>
+                <div className="mt-1 text-[13px] font-semibold" style={{ color: shell.colors.fg }}>
+                  Editing {theme.name}
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-[10px] font-medium" style={{ color: shell.colors.fg2 }}>
+                  {activeTab}
+                </div>
+                <div className="mt-1 text-[10px]" style={{ color: shell.colors.fg3 }}>
+                  Preview opens as a separate lab.
+                </div>
+              </div>
+            </div>
             <EditorTabs
               activeTab={activeTab}
               shell={shell}
@@ -191,12 +251,17 @@ export default function DesignTokenStudio() {
               ) : null}
             </div>
           </div>
-        </div>
 
-        <LivePreviewPanel
-          shell={previewShell}
-          themeName={deferredTheme.name}
-        />
+          {previewOpen ? (
+            <Suspense fallback={null}>
+              <LivePreviewPanel
+                shell={previewShell}
+                themeName={deferredTheme.name}
+                onToggleOpen={togglePreview}
+              />
+            </Suspense>
+          ) : null}
+        </div>
       </div>
 
       {showImport ? (

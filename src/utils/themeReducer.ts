@@ -1,7 +1,7 @@
 import type { DesignTheme, ThemeAction } from "../types";
 import { PRIMITIVE_STEPS } from "../types";
-import { createDefaultScale } from "../constants/config";
-import { cloneTheme } from "./tokens";
+import { createDefaultScale, createDefaultTypographyToken } from "../constants/config";
+import { cloneTheme, sortTypographyEntries } from "./tokens";
 
 export function themeReducer(state: DesignTheme, action: ThemeAction): DesignTheme {
   switch (action.type) {
@@ -79,6 +79,49 @@ return {
       return {
         ...state,
         semantics: state.semantics.filter((_, index) => index !== action.index),
+      };
+
+    case "add-typography": {
+      const normalizedKey = action.key.trim().toLowerCase();
+      if (!normalizedKey || state.typography[normalizedKey]) {
+        return state;
+      }
+
+      const nextTypographyEntries = sortTypographyEntries([
+        ...Object.entries(state.typography),
+        [
+          normalizedKey,
+          {
+            ...createDefaultTypographyToken(),
+            ...action.token,
+          },
+        ],
+      ]);
+
+      return {
+        ...state,
+        typography: Object.fromEntries(nextTypographyEntries),
+      };
+    }
+
+    case "remove-typography": {
+      if (!state.typography[action.key]) {
+        return state;
+      }
+
+      const nextTypography = { ...state.typography };
+      delete nextTypography[action.key];
+
+      return {
+        ...state,
+        typography: nextTypography,
+      };
+    }
+
+    case "sort-typography":
+      return {
+        ...state,
+        typography: Object.fromEntries(sortTypographyEntries(Object.entries(state.typography))),
       };
 
     case "update-typography":

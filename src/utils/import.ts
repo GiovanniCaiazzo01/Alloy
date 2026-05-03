@@ -4,6 +4,7 @@ import type {
   PrimitiveCollection,
   PrimitiveScale,
   SemanticToken,
+  ThemeImportSummary,
   TypographyCollection,
   TypographyToken,
 } from "../types";
@@ -38,14 +39,6 @@ type ImportedThemeData = Partial<
     "name" | "fontFamily" | "primitives" | "semantics" | "typography" | "breakpoints"
   >
 >;
-
-export type ThemeImportSummary = {
-  primitiveScales: number;
-  primitiveTokens: number;
-  semantics: number;
-  typography: number;
-  breakpoints: number;
-};
 
 export type ThemeImportResult = {
   theme: DesignTheme;

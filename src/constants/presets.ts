@@ -103,43 +103,43 @@ export const DEFAULT_PRESET: DesignTheme = {
       letterSpacing: "0",
       weight: 400,
     },
-    paragrafo: {
+    body: {
       size: "1rem",
       lineHeight: "138%",
       letterSpacing: "0",
       weight: 400,
     },
-    "paragrafo-l": {
+    "body-large": {
       size: "1.25rem",
       lineHeight: "138%",
       letterSpacing: "0",
       weight: 400,
     },
-    h5: {
+    "title-small": {
       size: "1.25rem",
       lineHeight: "120%",
       letterSpacing: "0",
       weight: 500,
     },
-    h4: {
+    "title-medium": {
       size: "1.563rem",
       lineHeight: "120%",
       letterSpacing: "0",
       weight: 500,
     },
-    h3: {
+    "title-large": {
       size: "1.938rem",
       lineHeight: "120%",
       letterSpacing: "0",
       weight: 500,
     },
-    h2: {
+    "display-small": {
       size: "2.438rem",
       lineHeight: "120%",
       letterSpacing: "0",
       weight: 500,
     },
-    h1: {
+    "display-large": {
       size: "3.063rem",
       lineHeight: "120%",
       letterSpacing: "0",
@@ -252,43 +252,43 @@ export const DARK_PRESET: DesignTheme = {
       letterSpacing: "0.02em",
       weight: 400,
     },
-    paragrafo: {
+    body: {
       size: "0.875rem",
       lineHeight: "150%",
       letterSpacing: "0",
       weight: 400,
     },
-    "paragrafo-l": {
+    "body-large": {
       size: "1rem",
       lineHeight: "150%",
       letterSpacing: "0",
       weight: 400,
     },
-    h5: {
+    "title-small": {
       size: "1.125rem",
       lineHeight: "130%",
       letterSpacing: "-0.01em",
       weight: 600,
     },
-    h4: {
+    "title-medium": {
       size: "1.25rem",
       lineHeight: "130%",
       letterSpacing: "-0.01em",
       weight: 600,
     },
-    h3: {
+    "title-large": {
       size: "1.5rem",
       lineHeight: "120%",
       letterSpacing: "-0.02em",
       weight: 600,
     },
-    h2: {
+    "display-small": {
       size: "2rem",
       lineHeight: "120%",
       letterSpacing: "-0.02em",
       weight: 700,
     },
-    h1: {
+    "display-large": {
       size: "2.5rem",
       lineHeight: "110%",
       letterSpacing: "-0.03em",
@@ -351,13 +351,13 @@ export const BLANK_CANVAS_THEME: DesignTheme = {
       letterSpacing: "0",
       weight: 400,
     },
-    paragrafo: {
+    body: {
       size: "1rem",
       lineHeight: "150%",
       letterSpacing: "0",
       weight: 400,
     },
-    h1: {
+    "display-large": {
       size: "2.25rem",
       lineHeight: "120%",
       letterSpacing: "-0.02em",
@@ -444,13 +444,13 @@ export const OCEAN_PRESET: DesignTheme = {
   ],
   typography: {
     caption: { size: "0.75rem", lineHeight: "140%", letterSpacing: "0.04em", weight: 400 },
-    paragrafo: { size: "1rem", lineHeight: "160%", letterSpacing: "0", weight: 400 },
-    "paragrafo-l": { size: "1.125rem", lineHeight: "155%", letterSpacing: "0", weight: 400 },
-    h5: { size: "1.25rem", lineHeight: "130%", letterSpacing: "-0.01em", weight: 600 },
-    h4: { size: "1.5rem", lineHeight: "125%", letterSpacing: "-0.015em", weight: 600 },
-    h3: { size: "2rem", lineHeight: "120%", letterSpacing: "-0.02em", weight: 700 },
-    h2: { size: "2.5rem", lineHeight: "115%", letterSpacing: "-0.025em", weight: 700 },
-    h1: { size: "3.5rem", lineHeight: "105%", letterSpacing: "-0.03em", weight: 800 },
+    body: { size: "1rem", lineHeight: "160%", letterSpacing: "0", weight: 400 },
+    "body-large": { size: "1.125rem", lineHeight: "155%", letterSpacing: "0", weight: 400 },
+    "title-small": { size: "1.25rem", lineHeight: "130%", letterSpacing: "-0.01em", weight: 600 },
+    "title-medium": { size: "1.5rem", lineHeight: "125%", letterSpacing: "-0.015em", weight: 600 },
+    "title-large": { size: "2rem", lineHeight: "120%", letterSpacing: "-0.02em", weight: 700 },
+    "display-small": { size: "2.5rem", lineHeight: "115%", letterSpacing: "-0.025em", weight: 700 },
+    "display-large": { size: "3.5rem", lineHeight: "105%", letterSpacing: "-0.03em", weight: 800 },
   },
   breakpoints: { sm: "27.5rem", md: "46.5rem", lg: "90rem" },
 };
@@ -532,13 +532,13 @@ export const SUNSET_PRESET: DesignTheme = {
   ],
   typography: {
     caption: { size: "0.813rem", lineHeight: "138%", letterSpacing: "0.02em", weight: 400 },
-    paragrafo: { size: "1rem", lineHeight: "165%", letterSpacing: "0.01em", weight: 400 },
-    "paragrafo-l": { size: "1.25rem", lineHeight: "160%", letterSpacing: "0.01em", weight: 400 },
-    h5: { size: "1.375rem", lineHeight: "125%", letterSpacing: "0", weight: 600 },
-    h4: { size: "1.75rem", lineHeight: "120%", letterSpacing: "0", weight: 600 },
-    h3: { size: "2.25rem", lineHeight: "115%", letterSpacing: "-0.01em", weight: 700 },
-    h2: { size: "3rem", lineHeight: "110%", letterSpacing: "-0.02em", weight: 700 },
-    h1: { size: "4rem", lineHeight: "105%", letterSpacing: "-0.03em", weight: 700 },
+    body: { size: "1rem", lineHeight: "165%", letterSpacing: "0.01em", weight: 400 },
+    "body-large": { size: "1.25rem", lineHeight: "160%", letterSpacing: "0.01em", weight: 400 },
+    "title-small": { size: "1.375rem", lineHeight: "125%", letterSpacing: "0", weight: 600 },
+    "title-medium": { size: "1.75rem", lineHeight: "120%", letterSpacing: "0", weight: 600 },
+    "title-large": { size: "2.25rem", lineHeight: "115%", letterSpacing: "-0.01em", weight: 700 },
+    "display-small": { size: "3rem", lineHeight: "110%", letterSpacing: "-0.02em", weight: 700 },
+    "display-large": { size: "4rem", lineHeight: "105%", letterSpacing: "-0.03em", weight: 700 },
   },
   breakpoints: { sm: "27.5rem", md: "46.5rem", lg: "90rem" },
 };
@@ -620,13 +620,13 @@ export const FOREST_PRESET: DesignTheme = {
   ],
   typography: {
     caption: { size: "0.813rem", lineHeight: "138%", letterSpacing: "0.01em", weight: 400 },
-    paragrafo: { size: "1rem", lineHeight: "170%", letterSpacing: "0.005em", weight: 400 },
-    "paragrafo-l": { size: "1.25rem", lineHeight: "165%", letterSpacing: "0", weight: 400 },
-    h5: { size: "1.25rem", lineHeight: "130%", letterSpacing: "-0.01em", weight: 500 },
-    h4: { size: "1.563rem", lineHeight: "125%", letterSpacing: "-0.015em", weight: 500 },
-    h3: { size: "1.938rem", lineHeight: "120%", letterSpacing: "-0.02em", weight: 500 },
-    h2: { size: "2.438rem", lineHeight: "115%", letterSpacing: "-0.025em", weight: 500 },
-    h1: { size: "3.063rem", lineHeight: "110%", letterSpacing: "-0.03em", weight: 500 },
+    body: { size: "1rem", lineHeight: "170%", letterSpacing: "0.005em", weight: 400 },
+    "body-large": { size: "1.25rem", lineHeight: "165%", letterSpacing: "0", weight: 400 },
+    "title-small": { size: "1.25rem", lineHeight: "130%", letterSpacing: "-0.01em", weight: 500 },
+    "title-medium": { size: "1.563rem", lineHeight: "125%", letterSpacing: "-0.015em", weight: 500 },
+    "title-large": { size: "1.938rem", lineHeight: "120%", letterSpacing: "-0.02em", weight: 500 },
+    "display-small": { size: "2.438rem", lineHeight: "115%", letterSpacing: "-0.025em", weight: 500 },
+    "display-large": { size: "3.063rem", lineHeight: "110%", letterSpacing: "-0.03em", weight: 500 },
   },
   breakpoints: { sm: "27.5rem", md: "46.5rem", lg: "90rem" },
 };
@@ -708,13 +708,13 @@ export const MINIMAL_PRESET: DesignTheme = {
   ],
   typography: {
     caption: { size: "0.75rem", lineHeight: "140%", letterSpacing: "0.05em", weight: 500 },
-    paragrafo: { size: "1rem", lineHeight: "155%", letterSpacing: "0.01em", weight: 300 },
-    "paragrafo-l": { size: "1.125rem", lineHeight: "150%", letterSpacing: "0.01em", weight: 300 },
-    h5: { size: "1.25rem", lineHeight: "130%", letterSpacing: "0", weight: 700 },
-    h4: { size: "1.5rem", lineHeight: "125%", letterSpacing: "0", weight: 700 },
-    h3: { size: "2rem", lineHeight: "120%", letterSpacing: "-0.01em", weight: 700 },
-    h2: { size: "2.5rem", lineHeight: "115%", letterSpacing: "-0.02em", weight: 700 },
-    h1: { size: "3.5rem", lineHeight: "108%", letterSpacing: "-0.04em", weight: 800 },
+    body: { size: "1rem", lineHeight: "155%", letterSpacing: "0.01em", weight: 300 },
+    "body-large": { size: "1.125rem", lineHeight: "150%", letterSpacing: "0.01em", weight: 300 },
+    "title-small": { size: "1.25rem", lineHeight: "130%", letterSpacing: "0", weight: 700 },
+    "title-medium": { size: "1.5rem", lineHeight: "125%", letterSpacing: "0", weight: 700 },
+    "title-large": { size: "2rem", lineHeight: "120%", letterSpacing: "-0.01em", weight: 700 },
+    "display-small": { size: "2.5rem", lineHeight: "115%", letterSpacing: "-0.02em", weight: 700 },
+    "display-large": { size: "3.5rem", lineHeight: "108%", letterSpacing: "-0.04em", weight: 800 },
   },
   breakpoints: { sm: "640px", md: "768px", lg: "1280px" },
 };
@@ -728,4 +728,3 @@ export const PRESETS: readonly DesignTheme[] = [
   MINIMAL_PRESET,
   BLANK_CANVAS_THEME,
 ];
-

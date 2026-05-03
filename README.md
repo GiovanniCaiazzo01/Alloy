@@ -59,7 +59,7 @@ Map meaningful names to primitives. Change `grey.100` once, and every `backgroun
 <td width="50%">
 
 #### 🔤 Typography System
-Define `caption` through `h1` with precise control over size, line-height, letter-spacing, and weight. See live specimens render in your chosen Google Font.
+Define role-based tokens like `caption`, `body`, `title-large`, and `display-large` with precise control over size, line-height, letter-spacing, and weight. See live specimens render in your chosen Google Font.
 
 </td>
 <td width="50%">
@@ -153,16 +153,16 @@ Configure your type scale with exact measurements.
 
 ```css
 @theme {
-  --text-h1: 3.063rem;
-  --text-h1--line-height: 120%;
-  --text-h1--letter-spacing: 0;
+  --text-display-large: 3.063rem;
+  --text-display-large--line-height: 120%;
+  --text-display-large--letter-spacing: 0;
 }
 
-@utility type-h1 {
+@utility type-display-large {
   font-family: var(--font-sans);
-  font-size: var(--text-h1);
-  line-height: var(--text-h1--line-height);
-  letter-spacing: var(--text-h1--letter-spacing);
+  font-size: var(--text-display-large);
+  line-height: var(--text-display-large--line-height);
+  letter-spacing: var(--text-display-large--letter-spacing);
   font-weight: 500;
 }
 ```

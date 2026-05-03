@@ -1,5 +1,28 @@
 import type { DesignTheme, PrimitiveCollection, PrimitiveScale } from "../types";
 
+const TYPOGRAPHY_ROLE_ORDER = ["caption", "body", "title", "display"] as const;
+const TYPOGRAPHY_SIZE_ORDER = [
+  "xs",
+  "small",
+  "sm",
+  "medium",
+  "md",
+  "large",
+  "lg",
+  "xl",
+  "2xl",
+  "3xl",
+  "4xl",
+] as const;
+
+const TYPOGRAPHY_GROUPS = [
+  { id: "caption", label: "Caption" },
+  { id: "body", label: "Body" },
+  { id: "title", label: "Title" },
+  { id: "display", label: "Display" },
+  { id: "other", label: "Other" },
+] as const;
+
 export function getSortedPrimitiveSteps(scale: PrimitiveScale): number[] {
   return Object.keys(scale)
     .map((step) => Number(step))
@@ -112,4 +135,53 @@ export function cloneTheme(theme: DesignTheme): DesignTheme {
     ),
     breakpoints: { ...theme.breakpoints },
   };
+}
+
+function getTypographyRoleRank(tokenName: string): number {
+  const roleIndex = TYPOGRAPHY_ROLE_ORDER.findIndex(
+    (role) => tokenName === role || tokenName.startsWith(`${role}-`)
+  );
+
+  return roleIndex === -1 ? TYPOGRAPHY_ROLE_ORDER.length : roleIndex;
+}
+
+function getTypographySizeRank(tokenName: string): number {
+  const suffix = tokenName.split("-").slice(1).join("-");
+  if (!suffix) {
+    return -1;
+  }
+
+  const sizeIndex = TYPOGRAPHY_SIZE_ORDER.findIndex(
+    (size) => suffix === size || suffix.endsWith(`-${size}`)
+  );
+
+  return sizeIndex === -1 ? TYPOGRAPHY_SIZE_ORDER.length : sizeIndex;
+}
+
+export function sortTypographyEntries<T>(entries: [string, T][]): [string, T][] {
+  return [...entries].sort(([leftName], [rightName]) => {
+    const roleRankDiff = getTypographyRoleRank(leftName) - getTypographyRoleRank(rightName);
+    if (roleRankDiff !== 0) {
+      return roleRankDiff;
+    }
+
+    const sizeRankDiff = getTypographySizeRank(leftName) - getTypographySizeRank(rightName);
+    if (sizeRankDiff !== 0) {
+      return sizeRankDiff;
+    }
+
+    return leftName.localeCompare(rightName);
+  });
+}
+
+export function getTypographyGroupId(tokenName: string): string {
+  const matchingGroup = TYPOGRAPHY_GROUPS.find(
+    (group) => group.id !== "other" && (tokenName === group.id || tokenName.startsWith(`${group.id}-`))
+  );
+
+  return matchingGroup?.id ?? "other";
+}
+
+export function getTypographyGroupLabel(groupId: string): string {
+  return TYPOGRAPHY_GROUPS.find((group) => group.id === groupId)?.label ?? "Other";
 }

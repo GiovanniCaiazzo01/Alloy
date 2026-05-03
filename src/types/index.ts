@@ -35,6 +35,19 @@ export type DesignTheme = {
   breakpoints: BreakpointCollection;
 };
 
+export type ThemeImportSummary = {
+  primitiveScales: number;
+  primitiveTokens: number;
+  semantics: number;
+  typography: number;
+  breakpoints: number;
+};
+
+export type ImportedThemeState = {
+  sourceLabel: string;
+  summary: ThemeImportSummary;
+};
+
 export type ShellThemeSource = Pick<
   DesignTheme,
   "fontFamily" | "primitives" | "semantics" | "typography"
@@ -90,6 +103,9 @@ export type ThemeAction =
     changes: Partial<Pick<SemanticToken, "name" | "value">>;
   }
   | { type: "remove-semantic"; index: number }
+  | { type: "add-typography"; key: string; token: TypographyToken }
+  | { type: "remove-typography"; key: string }
+  | { type: "sort-typography" }
   | {
     type: "update-typography";
     key: string;
@@ -122,7 +138,7 @@ export type ExportModalProps = {
 export type ImportModalProps = {
   shell: ShellTheme;
   onClose: () => void;
-  onImport: (payload: string) => void;
+  onImport: (payload: string, sourceLabel: string) => void;
 };
 
 export type HeaderProps = {
@@ -130,12 +146,14 @@ export type HeaderProps = {
   shell: ShellTheme;
   themeName: string;
   editingName: boolean;
+  previewOpen: boolean;
   onStartEditingName: () => void;
   onStopEditingName: () => void;
   onThemeNameChange: (name: string) => void;
   onReset: () => void;
   onOpenImport: () => void;
   onOpenExport: () => void;
+  onTogglePreview: () => void;
   onPreloadImport: () => void;
   onPreloadExport: () => void;
 };
@@ -143,6 +161,8 @@ export type HeaderProps = {
 export type PresetSidebarProps = {
   activePreset: number;
   shell: ShellTheme;
+  themeName: string;
+  importedThemeState: ImportedThemeState | null;
   onSelectPreset: (index: number) => void;
   onCreateBlankCanvas: () => void;
 };
@@ -156,4 +176,5 @@ export type EditorTabsProps = {
 export type LivePreviewProps = {
   shell: ShellTheme;
   themeName: string;
+  onToggleOpen: () => void;
 };

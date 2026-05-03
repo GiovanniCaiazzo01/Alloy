@@ -1,234 +1,156 @@
+import { lazy, startTransition, Suspense, useState } from "react";
+import { ChevronRight, LayoutTemplate, PanelsTopLeft, Search, ShieldCheck, X } from "lucide-react";
 import type { LivePreviewProps } from "../types";
-import { PREVIEW_CARDS } from "../constants/config";
 
-const PREVIEW_NAV_ITEMS = ["Docs", "Blog"] as const;
-const STATIC_PREVIEW_BADGES = [
-  { label: "Success", bg: "#22c55e22", fg: "#22c55e" },
-  { label: "Warning", bg: "#f59e0b22", fg: "#f59e0b" },
+const sceneDefinitions = [
+  {
+    id: "form-auth",
+    label: "Form + Auth",
+    Icon: ShieldCheck,
+    load: () => import("./previews/FormAuthPreview"),
+  },
+  {
+    id: "dashboard",
+    label: "Dashboard",
+    Icon: PanelsTopLeft,
+    load: () => import("./previews/DashboardPreview"),
+  },
+  {
+    id: "marketing",
+    label: "Marketing",
+    Icon: LayoutTemplate,
+    load: () => import("./previews/MarketingPreview"),
+  },
+  {
+    id: "command",
+    label: "Command",
+    Icon: Search,
+    load: () => import("./previews/CommandPreview"),
+  },
 ] as const;
 
-export function LivePreviewPanel({
-  shell,
-  themeName,
-}: LivePreviewProps) {
+type PreviewSceneId = (typeof sceneDefinitions)[number]["id"];
+
+const lazySceneModules = Object.fromEntries(
+  sceneDefinitions.map((scene) => [scene.id, lazy(scene.load)])
+) as Record<PreviewSceneId, ReturnType<typeof lazy>>;
+
+function PreviewFallback({ shell }: Pick<LivePreviewProps, "shell">) {
   return (
-    <div
-      className="w-full h-[250px] md:h-[320px] overflow-y-auto flex-shrink-0 border-t transition-all"
+    <div className="p-4 sm:p-6">
+      <div
+        className="animate-pulse rounded-[28px] border p-6"
+        style={{
+          borderColor: shell.colors.border,
+          background: shell.colors.bg,
+        }}
+      >
+        <div className="h-4 w-28 rounded" style={{ background: shell.colors.bg3 }} />
+        <div className="mt-4 h-8 w-2/3 rounded" style={{ background: shell.colors.bg3 }} />
+        <div className="mt-3 h-4 w-full rounded" style={{ background: shell.colors.bg3 }} />
+        <div className="mt-2 h-4 w-4/5 rounded" style={{ background: shell.colors.bg3 }} />
+      </div>
+    </div>
+  );
+}
+
+export function LivePreviewPanel({ shell, themeName, onToggleOpen }: LivePreviewProps) {
+  const [activeScene, setActiveScene] = useState<PreviewSceneId>("form-auth");
+  const ActiveScene = lazySceneModules[activeScene];
+
+  return (
+    <aside
+      className="w-full border-t md:w-[min(38vw,460px)] md:border-l md:border-t-0 flex-shrink-0 flex flex-col min-h-[320px] md:min-h-0"
       style={{
         borderColor: shell.colors.border,
         background: shell.colors.bg2,
       }}
     >
       <div
-        className="px-4 py-3 border-b text-[8px] tracking-[0.2em] uppercase font-bold flex items-center gap-2"
-        style={{
-          borderColor: shell.colors.border,
-          color: shell.colors.muted,
-        }}
+        className="px-4 py-3 border-b flex items-start justify-between gap-3"
+        style={{ borderColor: shell.colors.border }}
       >
-        <div
-          className="w-1.5 h-1.5 rounded-full bg-[#22c55e] shadow-[0_0_8px_#22c55e]"
-        />
-        Live Preview
-        <span
-          className="ml-auto text-[8px] tracking-widest opacity-60"
-          style={{ color: shell.colors.muted }}
-        >
-          {themeName}
-        </span>
-      </div>
-      <div className="p-3.5">
-        <div
-          className="rounded-xl overflow-hidden border shadow-lg transition-shadow"
+        <div>
+          <div
+            className="text-[8px] uppercase tracking-[0.22em] font-bold"
+            style={{ color: shell.colors.brandBg }}
+          >
+            Live Preview Lab
+          </div>
+          <div className="mt-1 text-[13px] font-semibold" style={{ color: shell.colors.fg }}>
+            Preview real UI with your tokens
+          </div>
+          <div className="mt-1 text-[10px]" style={{ color: shell.colors.fg3 }}>
+            {themeName}
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={onToggleOpen}
+          className="flex items-center gap-1 rounded-md px-2 py-1 text-[10px] font-medium cursor-pointer border"
           style={{
-            background: shell.colors.bg,
             borderColor: shell.colors.border,
+            color: shell.colors.fg3,
+            background: shell.colors.bg,
           }}
         >
-          <div
-            className="px-3.5 py-2.5 border-b flex items-center justify-between"
-            style={{
-              background: shell.colors.bg2,
-              borderColor: shell.colors.border,
-            }}
-          >
-            <span
-              className="font-bold text-[13px] tracking-tight"
-              style={{ color: shell.colors.fg }}
-            >
-              {themeName}
-            </span>
-            <div className="flex gap-2.5 items-center">
-              {PREVIEW_NAV_ITEMS.map((label) => (
-                <span
-                  key={label}
-                  className="text-[9px]"
-                  style={{ color: shell.colors.fg3 }}
-                >
-                  {label}
-                </span>
-              ))}
-              <span
-                className="text-[9px] px-2 py-0.5 rounded font-bold"
-                style={{
-                  background: shell.colors.brandBg,
-                  color: "#fff",
-                }}
-              >
-                Get started
-              </span>
-            </div>
-          </div>
+          <X size={12} /> Close
+        </button>
+      </div>
 
-          <div
-            className="px-3.5 py-5 border-b"
-            style={{
-              background: `linear-gradient(160deg, ${shell.colors.bg} 0%, ${shell.colors.bg2} 100%)`,
-              borderColor: shell.colors.border,
-            }}
-          >
-            <div
-              className="text-[8px] uppercase font-bold tracking-widest mb-2"
-              style={{ color: shell.colors.brandBg }}
-            >
-              ✦ New release
-            </div>
-            <div
-              className="font-bold text-xl leading-none mb-2.5 tracking-tight"
-              style={{ color: shell.colors.fg }}
-            >
-              Design systems
-              <br />
-              made semantic
-            </div>
-            <div
-              className="text-[11px] leading-relaxed mb-3.5"
-              style={{ color: shell.colors.fg3 }}
-            >
-              Primitive scales, semantic aliases, and type utilities in one place.
-            </div>
-            <div className="flex gap-2">
+      <div className="px-3 py-3 border-b overflow-x-auto no-scrollbar" style={{ borderColor: shell.colors.border }}>
+        <div className="flex gap-2 min-w-max">
+          {sceneDefinitions.map((scene) => {
+            const isActive = scene.id === activeScene;
+            const Icon = scene.Icon;
+
+            return (
               <button
+                key={scene.id}
                 type="button"
-                className="px-3 py-1.5 rounded-md text-[10px] font-bold cursor-pointer transition-all"
+                onClick={() => {
+                  startTransition(() => {
+                    setActiveScene(scene.id);
+                  });
+                }}
+                className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[10px] font-semibold cursor-pointer"
                 style={{
-                  background: shell.colors.brandBg,
-                  color: "#fff",
+                  borderColor: isActive ? shell.colors.border2 : shell.colors.border,
+                  background: isActive ? shell.colors.bg : "transparent",
+                  color: isActive ? shell.colors.fg : shell.colors.fg3,
                 }}
               >
-                Get Started →
+                <Icon size={12} /> {scene.label}
               </button>
-              <button
-                type="button"
-                className="px-3 py-1.5 rounded-md text-[10px] font-bold cursor-pointer transition-all border"
-                style={{
-                  borderColor: shell.colors.border,
-                  background: "transparent",
-                  color: shell.colors.fg2,
-                }}
-              >
-                Learn more
-              </button>
-            </div>
-          </div>
-
-          <div className="p-3 grid grid-cols-2 gap-2">
-            {PREVIEW_CARDS.map((card) => (
-              <div
-                key={card.title}
-                className="rounded-lg border p-2.5 transition-colors"
-                style={{
-                  background: shell.colors.bg2,
-                  borderColor: shell.colors.border,
-                }}
-              >
-                <div
-                  className="text-lg mb-1"
-                  style={{ color: shell.colors.brandBg }}
-                >
-                  {card.icon}
-                </div>
-                <div
-                  className="text-[11px] font-bold mb-0.5"
-                  style={{ color: shell.colors.fg }}
-                >
-                  {card.title}
-                </div>
-                <div className="text-[9px]" style={{ color: shell.colors.fg3 }}>
-                  {card.desc}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="px-3 pb-2.5">
-            <div
-              className="flex items-center rounded-md border px-2.5 py-1.5 gap-1.5"
-              style={{
-                background: shell.colors.bg2,
-                borderColor: shell.colors.border,
-              }}
-            >
-              <span className="text-xs grayscale opacity-50">🔍</span>
-              <span className="text-[10px]" style={{ color: shell.colors.fg3 }}>
-                Search tokens...
-              </span>
-            </div>
-          </div>
-
-          <div className="px-3 pb-3 flex gap-1.5 flex-wrap">
-            {[
-              { label: "Primary", bg: shell.colors.brandBg, fg: "#fff" },
-              ...STATIC_PREVIEW_BADGES,
-            ].map((badge) => (
-              <span
-                key={badge.label}
-                className="text-[8px] px-2 py-0.5 rounded font-bold tracking-wider"
-                style={{
-                  background: badge.bg,
-                  color: badge.fg,
-                }}
-              >
-                {badge.label}
-              </span>
-            ))}
-          </div>
-
-          <div
-            className="mx-3 mb-3 rounded-lg border p-3"
-            style={{
-              background: shell.colors.bg2,
-              borderColor: shell.colors.border,
-            }}
-          >
-            <div
-              className="text-[7px] uppercase font-bold mb-1.5 tracking-widest"
-              style={{ color: shell.colors.fg3 }}
-            >
-              Type Specimen
-            </div>
-            <div
-              className="text-[15px] font-bold mb-1 tracking-tight"
-              style={{ color: shell.colors.fg }}
-            >
-              Display Heading
-            </div>
-            <div
-              className="text-[10px] leading-relaxed"
-              style={{ color: shell.colors.fg3 }}
-            >
-              Body text flows naturally with the design token system.
-            </div>
-          </div>
-
-          <div
-            className="h-1"
-            style={{
-              background: `linear-gradient(90deg, ${shell.colors.brandBg}, ${shell.colors.brandBg}88)`,
-            }}
-          />
+            );
+          })}
         </div>
       </div>
-    </div>
+
+      <div className="px-4 py-3 border-b" style={{ borderColor: shell.colors.border }}>
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <div className="text-[10px] font-medium" style={{ color: shell.colors.fg }}>
+              Active scene
+            </div>
+            <div className="text-[10px] mt-1" style={{ color: shell.colors.fg3 }}>
+              Switch between app surfaces without loading all of them upfront.
+            </div>
+          </div>
+          <div
+            className="flex items-center gap-1 text-[10px] font-medium"
+            style={{ color: shell.colors.brandBg }}
+          >
+            Lazy loaded <ChevronRight size={12} />
+          </div>
+        </div>
+      </div>
+
+      <div className="flex-1 overflow-y-auto">
+        <Suspense fallback={<PreviewFallback shell={shell} />}>
+          <ActiveScene shell={shell} themeName={themeName} />
+        </Suspense>
+      </div>
+    </aside>
   );
 }

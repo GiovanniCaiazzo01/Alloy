@@ -1,4 +1,4 @@
-import { RotateCcw, Code, Copy, Upload } from "lucide-react";
+import { PanelsTopLeft, RotateCcw, Code, Copy, Upload } from "lucide-react";
 import type { HeaderProps } from "../types";
 
 export function AppHeader({
@@ -6,12 +6,14 @@ export function AppHeader({
   shell,
   themeName,
   editingName,
+  previewOpen,
   onStartEditingName,
   onStopEditingName,
   onThemeNameChange,
   onReset,
   onOpenImport,
   onOpenExport,
+  onTogglePreview,
   onPreloadImport,
   onPreloadExport,
 }: HeaderProps) {
@@ -84,6 +86,19 @@ export function AppHeader({
           disabled={activePreset < 0}
         >
           <RotateCcw size={11} /> <span className="hidden md:inline">Reset</span>
+        </button>
+        <button
+          type="button"
+          onClick={onTogglePreview}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[11px] font-medium transition-all cursor-pointer border"
+          style={{
+            borderColor: shell.colors.border,
+            background: previewOpen ? shell.colors.bg3 : shell.colors.bg,
+            color: shell.colors.fg,
+          }}
+        >
+          <PanelsTopLeft size={11} />
+          <span className="hidden md:inline">{previewOpen ? "Hide Preview" : "Show Preview"}</span>
         </button>
         <button
           type="button"
